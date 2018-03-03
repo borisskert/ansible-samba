@@ -1,0 +1,20 @@
+---
+samba_package_version: 4.7.4-r0
+
+image_name: local/samba-server
+image_version: "{{samba_package_version}}"
+
+container_name: samba.service
+
+dockerfile_path: /opt/samba-server/docker
+
+config_volume: ''
+log_volume: ''
+
+interface: 0.0.0.0
+
+port: ''
+
+workgroup: WORKGROUP
+server_string: "%h server (Samba, Alpine)"
+storages: []

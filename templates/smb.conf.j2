@@ -1,0 +1,45 @@
+[global]
+  workgroup = {{workgroup}}
+  server string = {{server_string}}
+  security = user
+  map to guest = Bad User
+  encrypt passwords = yes
+  load printers = no
+  printing = bsd
+  printcap name = /dev/null
+  disable spoolss = yes
+  disable netbios = yes
+  server role = standalone
+  server services = -dns, -nbt
+  smb ports = 445
+  ;name resolve order = hosts
+  ;log level = 3
+  log file = /var/log/samba/%m.log
+
+{% for storage in storages %}
+[{{storage.name}}]
+  path = {{storage.path}}
+  comment = {{storage.comment}}
+{% if storage.browseable is defined and storage.browseable == true %}
+  browseable = yes
+{% else %}
+  browseable = no
+{% endif %}
+{% if storage.writable is defined and storage.writable == true %}
+  writable = yes
+  read only = no
+{% else %}
+  writable = no
+  read only = yes
+{% endif %}
+{% if storage.guest_access is defined and storage.guest_access == true %}
+  guest ok = yes
+{% endif %}
+{% if storage.write_list is defined %}
+  write list = {% for writer in storage.write_list %}{{writer}} {% endfor %}
+{% endif %}
+
+  # getting rid of those annoying .DS_Store files created by Mac users...
+  veto files = /._*/.DS_Store/
+  delete veto files = yes
+{% endfor %}

@@ -1,0 +1,30 @@
+[Install]
+WantedBy = multi-user.target
+
+[Unit]
+Description = teamspeak service
+After       = docker.service
+Requires    = docker.service
+
+[Service]
+ExecStartPre = -/usr/bin/docker rm -f {{container_name}}
+ExecStartPre = -/usr/bin/docker build --tag {{image_name}}:{{image_version}} {{dockerfile_path}}
+ExecStart = /usr/bin/docker run --name {{container_name}} \
+{% if config_volume != "" %}
+            --volume {{config_volume}}/smb.conf:/etc/samba/smb.conf \
+{% endif %}
+{% if log_volume != "" %}
+            --volume {{log_volume}}:/var/log/samba \
+{% endif %}
+{% for storage in storages %}
+            --volume {{storage.host_path}}:{{storage.path}} \
+{% endfor %}
+{% if port != "" %}
+            --publish {{interface}}:{{port}}:445 \
+{% endif %}
+            {{image_name}}:{{image_version}}
+ExecStop  = -/usr/bin/docker stop {{container_name}}
+ExecStopPost  = -/usr/bin/docker rm -f {{container_name}}
+Restart = always
+RestartSec = 60s
+TimeoutSec=60

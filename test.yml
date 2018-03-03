@@ -1,0 +1,30 @@
+---
+- hosts: test_machine
+  become: yes
+
+  pre_tasks:
+  - apt:
+      name: python-docker
+      update_cache: yes
+
+  post_tasks:
+  - apt:
+      name: python-docker
+      state: absent
+      purge: yes
+
+  roles:
+  - role: '.'
+    port: 445
+    config_volume: /srv/docker/samba
+    log_volume: /var/log/samba
+    storages:
+    - name: Share
+      path: /share
+      host_path: /srv/docker/samba/share
+      comment: Share storage
+      browseable: true
+      writable: true
+      guest_access: true
+      write_list:
+      - flandi
