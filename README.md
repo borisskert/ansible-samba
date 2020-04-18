@@ -40,7 +40,7 @@ Installs samba-server as docker container.
 | storages              | array of storage | no | <empty array>         | The samba storage configuration    |
 | users                 | array of user    | no | <empty array>         | The samba user configuration       |
 
-### Definition structure
+### Definition storage
 
 | Property      | Type | Mandatory? | Description           |
 |---------------|------|------------|-----------------------|
