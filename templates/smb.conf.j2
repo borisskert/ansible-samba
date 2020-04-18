@@ -3,37 +3,53 @@
   server string = {{server_string}}
   security = user
   map to guest = Bad User
-  encrypt passwords = yes
   load printers = no
   printing = bsd
   printcap name = /dev/null
   disable spoolss = yes
+{% if enable_netbios is defined and enable_netbios | bool %}
+  disable netbios = no
+{% else %}
   disable netbios = yes
+{% endif %}
   server role = standalone
   server services = -dns, -nbt
   smb ports = 445
   ;name resolve order = hosts
-  ;log level = 3
+{% if log_level is defined %}
+  log level = {{log_level}}
+{% endif %}
   log file = /var/log/samba/%m.log
 
 {% for storage in storages %}
 [{{storage.name}}]
-  path = {{storage.path}}
+  path = /storage{{storage.path}}
   comment = {{storage.comment}}
-{% if storage.browseable is defined and storage.browseable == true %}
+{% if storage.browseable is defined and storage.browseable | bool %}
   browseable = yes
 {% else %}
   browseable = no
 {% endif %}
-{% if storage.writable is defined and storage.writable == true %}
+{% if storage.writable is defined and storage.writable | bool %}
   writable = yes
-  read only = no
 {% else %}
   writable = no
-  read only = yes
 {% endif %}
-{% if storage.guest_access is defined and storage.guest_access == true %}
+{% if storage.readonly is defined and storage.readonly | bool %}
+  read only = yes
+{% else %}
+  read only = no
+{% endif %}
+{% if storage.guest_access is defined and storage.guest_access | bool %}
   guest ok = yes
+{% endif %}
+{% if storage.delete_readonly is defined and storage.delete_readonly | bool %}
+  delete readonly = yes
+{% else %}
+  delete readonly = no
+{% endif %}
+{% if storage.force_user is defined and storage.force_user != '' %}
+  force user = {{storage.force_user}}
 {% endif %}
 {% if storage.write_list is defined %}
   write list = {% for writer in storage.write_list %}{{writer}} {% endfor %}

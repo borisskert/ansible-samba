@@ -1,30 +1,45 @@
 [Install]
-WantedBy = multi-user.target
+WantedBy=multi-user.target
 
 [Unit]
-Description = teamspeak service
-After       = docker.service
-Requires    = docker.service
+Description=samba service
+After=docker.service
+Requires=docker.service
 
 [Service]
-ExecStartPre = -/usr/bin/docker rm -f {{container_name}}
-ExecStartPre = -/usr/bin/docker build --tag {{image_name}}:{{image_version}} {{dockerfile_path}}
-ExecStart = /usr/bin/docker run --name {{container_name}} \
+ExecStartPre=-/usr/bin/docker rm -f {{container_name}}
+ExecStartPre=/usr/bin/docker pull {{image_name}}:{{image_version}}
+
+ExecStart=/usr/bin/docker run --name {{container_name}} \
 {% if config_volume != "" %}
-            --volume {{config_volume}}/smb.conf:/etc/samba/smb.conf \
+            --volume {{config_volume}}:/etc/samba \
 {% endif %}
 {% if log_volume != "" %}
             --volume {{log_volume}}:/var/log/samba \
 {% endif %}
-{% for storage in storages %}
-            --volume {{storage.host_path}}:{{storage.path}} \
-{% endfor %}
-{% if port != "" %}
-            --publish {{interface}}:{{port}}:445 \
+{% if log_volume != "" %}
+            --volume {{data_volume}}:/var/lib/samba \
 {% endif %}
+{% for storage in storages %}
+            --volume {{storage.host_path}}:/storage{{storage.path}} \
+{% endfor %}
+            --env USERID={{samba_user}} \
+            --env GROUPID={{samba_user}} \
+{% if samba_port != "" %}
+            --publish {{interface}}:{{samba_port}}:445/tcp \
+{% endif %}
+{% if enable_netbios | bool %}
+            --publish {{interface}}:137:137/udp \
+            --publish {{interface}}:138:138/udp \
+            --publish {{interface}}:139:139/tcp \
+{% endif %}
+            --tmpfs /tmp \
+            --tmpfs /var/cache/samba \
             {{image_name}}:{{image_version}}
-ExecStop  = -/usr/bin/docker stop {{container_name}}
-ExecStopPost  = -/usr/bin/docker rm -f {{container_name}}
-Restart = always
-RestartSec = 60s
-TimeoutSec=60
+
+ExecStop=-/usr/bin/docker stop {{container_name}}
+ExecStopPost=-/usr/bin/docker rm -f {{container_name}}
+
+Restart=always
+RestartSec=60s
+TimeoutSec=3600

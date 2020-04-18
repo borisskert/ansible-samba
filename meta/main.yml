@@ -1,12 +1,13 @@
 ---
 galaxy_info:
-  author: flandiGT
+  author: borisskert
   description: Installation role for samba-server docker container
-  min_ansible_version: 2.1
+  min_ansible_version: 2.9
   platforms:
   - name: Ubuntu
     versions:
     - xenial
+    - bionic
   categories:
   - development
   - packaging

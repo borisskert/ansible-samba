@@ -1,0 +1,49 @@
+---
+- hosts: test_machine
+  become: yes
+
+  roles:
+    - role: install-docker
+      storage_driver: overlay2
+      cleanup_enabled: no
+      install_pip_docker: yes
+
+    - role: ansible-samba
+      samba_port: 445
+      enable_netbios: yes
+      interface: 0.0.0.0
+      config_volume: /srv/docker/samba/config
+      data_volume: /srv/docker/samba/data
+      log_volume: /var/log/samba
+      log_level: 2
+      users:
+        - username: user1
+          password: user1pwd
+        - username: user2
+          password: user2pwd
+      storages:
+        - name: Share
+          path: /share
+          host_path: /srv/docker/samba/storage/share
+          comment: Share storage
+          browseable: yess
+          writable: yes
+          guest_access: yes
+        - name: Outgoing
+          path: /out
+          host_path: /srv/docker/samba/storage/out
+          comment: Outgoing storage
+          browseable: yes
+          writable: no
+          guest_access: true
+          write_list:
+            - user1
+        - name: user1
+          path: /user1
+          host_path: /srv/docker/samba/storage/user1
+          comment: user1 Home
+          browseable: yes
+          writable: yes
+          guest_access: no
+          write_list:
+            - user1

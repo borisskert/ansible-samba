@@ -1,29 +1,70 @@
 ---
-- name: create data directory
-  file: path={{config_volume}} state=directory owner=root group=root mode=0755
+- name: create config directory
+  file:
+    path: "{{config_volume}}"
+    state: directory
+    owner: "{{samba_user}}"
+    group: "{{samba_user}}"
+    mode: 0755
   when: not(
-            (config_volume is undefined)
-            or
-            (config_volume is none)
-            or
-            (config_volume | trim == '')
-          )
+    (config_volume is undefined)
+    or
+    (config_volume is none)
+    or
+    (config_volume | trim == '')
+    )
 
 - name: create log directory
-  file: path={{log_volume}} state=directory owner=root group=root mode=0755
+  file:
+    path: "{{log_volume}}"
+    state: directory
+    owner: "{{samba_user}}"
+    group: "{{samba_user}}"
+    mode: 0755
   when: not(
-            (log_volume is undefined)
-            or
-            (log_volume is none)
-            or
-            (log_volume | trim == '')
-          )
+    (log_volume is undefined)
+    or
+    (log_volume is none)
+    or
+    (log_volume | trim == '')
+    )
+
+- name: create data directory
+  file:
+    path: "{{data_volume}}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0775
+  when: not(
+    (data_volume is undefined)
+    or
+    (data_volume is none)
+    or
+    (data_volume | trim == '')
+    )
+
+# otherwise, samba will not start and crash with an error
+- name: create data/private directory
+  file:
+    path: "{{data_volume}}/private"
+    state: directory
+    owner: root
+    group: root
+    mode: 0775
+  when: not(
+    (data_volume is undefined)
+    or
+    (data_volume is none)
+    or
+    (data_volume | trim == '')
+    )
 
 - name: create storage directories
   file:
     path: "{{item.host_path}}"
     state: directory
-    owner: root
-    group: root
+    owner: "{{samba_user}}"
+    group: "{{samba_user}}"
     mode: 0777
   with_items: "{{storages}}"

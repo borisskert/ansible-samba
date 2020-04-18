@@ -13,11 +13,12 @@ Installs samba-server as docker container.
 
 ## What does this role
 
-* Build docker image locally
+* Pull docker image from dperson/samba
 * Create volume paths for docker container
 * Template the samba config
 * Setup systemd unit file
 * Start/Restart service
+* Add samba users
 
 ## Role parameters
 
@@ -25,21 +26,21 @@ Installs samba-server as docker container.
 
 | Variable      | Type | Mandatory? | Default | Description           |
 |---------------|------|------------|---------|-----------------------|
-| samba_package_version | text | no | 4.7.4-r0 | The current samba package version, look at: [alpine samba package](https://pkgs.alpinelinux.org/packages?name=samba&branch=v3.7) |
-| image_name            | text | no | local/samba-server | Docker image name                                                                                                      |
-| image_version         | text | no | same of samba_package_version | Docker image version                                                                                        |
-| container_name        | text | no | samba.service                 | The name of the docker container                                                                            |
-| interface             | ip address | no | 0.0.0.0                 | Mapped network for web-interface ports                                                                      |
-| port                  | port       | no | <empty>                 | Default port (TCP): 445                                                                                     |
-| config_volume         | path       | no | <empty>                 | Path to config volume                                                                                       |
-| log_volume            | path       | no | <empty>                 | Path to log volume                                                                                          |
-| workgroup             | text       | no | WORKGROUP               | The default Samba workgroup                                                                                 |
-| server_string         | text       | no | "%h server (Samba, Alpine)" | The default Samba server string                                                                         |
-| storages              | array of objects | no | <empty array>         | The samba storage configuration                                                                         |
+| samba_version         | text | no | latest | Your selected samba version |
+| image_name            | text | no | local/samba-server | Docker image name                                 |
+| image_version         | text | no | same of samba_version | Docker image version                           |
+| container_name        | text | no | samba.service                 | The name of the docker container       |
+| interface             | ip address | no | 0.0.0.0                 | Mapped network for web-interface ports |
+| samba_port            | port       | no | <empty>                 | Default port (TCP): 445                |
+| enable_netbios        | boolean    | no | no                      | Enables NetBios option and publish ports 137, 138 and 138 |
+| config_volume         | path       | no | <empty>                 | Path to config volume                  |
+| log_volume            | path       | no | <empty>                 | Path to log volume                     |
+| workgroup             | text       | no | WORKGROUP               | The default Samba workgroup            |
+| server_string         | text       | no | "%h server (Samba, Alpine)" | The default Samba server string    |
+| storages              | array of storage | no | <empty array>         | The samba storage configuration    |
+| users                 | array of user    | no | <empty array>         | The samba user configuration       |
 
-### mainconfig.storage
-
-The site storages is a list of storage objects:
+### Definition structure
 
 | Property      | Type | Mandatory? | Description           |
 |---------------|------|------------|-----------------------|
@@ -52,29 +53,65 @@ The site storages is a list of storage objects:
 | guest_access  | boolean | no      | Do guests have access?                                     |
 | write_list    | list of text | no | Names of accounts with write permission                    |
 
-## Example Playbook
+### Definition user
 
-Usage (without parameters):
+| Property      | Type | Mandatory? | Description           |
+|---------------|------|------------|-----------------------|
+| username      | text | yes        | Username of the specified user |
+| password      | text | yes        | (Clear text) password of the specified user |
 
-    - hosts: servers
-      roles:
-         - { role: install-samba }
+## Usage
 
-Usage (with parameters):
+### Requirements
 
-    - hosts: servers
-      roles:
-      - role: install-samba
-        port: 445
-        config_volume: /srv/docker/samba
-        log_volume: /var/log/samba
-        storages:
+```yaml
+- name: install-docker
+  src: https://github.com/borisskert/ansible-samba.git
+  scm: git
+```
+
+### Playbook
+
+```yaml
+- hosts: test_machine
+  become: yes
+
+  roles:
+    - role: ansible-samba
+      samba_port: 445
+      interface: 0.0.0.0
+      config_volume: /srv/docker/samba/config
+      data_volume: /srv/docker/samba/data
+      log_volume: /var/log/samba
+      users:
+        - username: user1
+          password: user1pwd
+        - username: user2
+          password: user2pwd
+      storages:
         - name: Share
           path: /share
-          host_path: /srv/docker/samba/share
+          host_path: /srv/docker/samba/storage/share
           comment: Share storage
-          browseable: true
-          writable: true
+          browseable: yess
+          writable: yes
+          guest_access: yes
+        - name: Outgoing
+          path: /out
+          host_path: /srv/docker/samba/storage/out
+          comment: Outgoing storage
+          browseable: yes
+          writable: no
           guest_access: true
           write_list:
-          - flandi
+            - user1
+        - name: user1
+          path: /user1
+          host_path: /srv/docker/samba/storage/user1
+          comment: user1 Home
+          browseable: yes
+          writable: yes
+          guest_access: no
+          write_list:
+            - user1
+```

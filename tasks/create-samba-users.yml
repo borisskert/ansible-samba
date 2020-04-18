@@ -1,0 +1,5 @@
+---
+- name: Create samba users
+  shell: '/usr/bin/docker exec {{container_name}} samba.sh -u "{{item.username}};{{item.password}}"'
+  with_items: "{{users}}"
+  changed_when: false

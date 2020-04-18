@@ -1,0 +1,6 @@
+---
+- name: pull image
+  docker_image:
+    name: "{{image_name}}:{{image_version}}"
+    source: pull
+  register: dockerimage

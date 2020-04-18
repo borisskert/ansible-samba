@@ -1,20 +1,22 @@
 ---
-samba_package_version: 4.7.4-r0
+image_name: dperson/samba
+image_version: latest
 
-image_name: local/samba-server
-image_version: "{{samba_package_version}}"
-
-container_name: samba.service
-
-dockerfile_path: /opt/samba-server/docker
+service_name: samba
+container_name: "{{service_name}}.service"
 
 config_volume: ''
 log_volume: ''
+data_volume: ''
 
 interface: 0.0.0.0
-
-port: ''
+samba_port: ''
+enable_netbios: no
 
 workgroup: WORKGROUP
 server_string: "%h server (Samba, Alpine)"
 storages: []
+users: []
+log_level: ''
+
+samba_user: '1000'
