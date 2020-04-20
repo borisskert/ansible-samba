@@ -44,21 +44,6 @@
     (config_volume | trim == '')
     )
 
-- name: create log directory
-  file:
-    path: "{{log_volume}}"
-    state: directory
-    owner: "{{samba_user}}"
-    group: "{{samba_user}}"
-    mode: 0755
-  when: not(
-    (log_volume is undefined)
-    or
-    (log_volume is none)
-    or
-    (log_volume | trim == '')
-    )
-
 - name: create data directory
   file:
     path: "{{data_volume}}"

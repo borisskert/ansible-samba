@@ -34,7 +34,7 @@ Installs samba-server as docker container.
 | samba_port            | port       | no | <empty>                 | Default port (TCP): 445                |
 | enable_netbios        | boolean    | no | no                      | Enables NetBios option and publish ports 137, 138 and 138 |
 | config_volume         | path       | no | <empty>                 | Path to config volume                  |
-| log_volume            | path       | no | <empty>                 | Path to log volume                     |
+| data_volume           | path       | no | <empty>                 | Path to data volume                    |
 | workgroup             | text       | no | WORKGROUP               | The default Samba workgroup            |
 | server_string         | text       | no | "%h server (Samba, Alpine)" | The default Samba server string    |
 | storages              | array of storage | no | <empty array>         | The samba storage configuration    |
@@ -82,7 +82,7 @@ Installs samba-server as docker container.
       interface: 0.0.0.0
       config_volume: /srv/docker/samba/config
       data_volume: /srv/docker/samba/data
-      log_volume: /var/log/samba
+      enable_netbios: yes
       users:
         - username: user1
           password: user1pwd

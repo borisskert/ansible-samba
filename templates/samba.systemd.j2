@@ -14,10 +14,7 @@ ExecStart=/usr/bin/docker run --name {{container_name}} \
 {% if config_volume != "" %}
             --volume {{config_volume}}/etc:/etc \
 {% endif %}
-{% if log_volume != "" %}
-            --volume {{log_volume}}:/var/log/samba \
-{% endif %}
-{% if log_volume != "" %}
+{% if data_volume != "" %}
             --volume {{data_volume}}:/var/lib/samba \
 {% endif %}
 {% for storage in storages %}
@@ -34,6 +31,7 @@ ExecStart=/usr/bin/docker run --name {{container_name}} \
             --tmpfs /tmp \
             --tmpfs /var/cache/samba \
             --tmpfs /run/samba \
+            --tmpfs /var/log/samba \
             {{image_name}}:{{image_version}}
 
 ExecStop=-/usr/bin/docker stop {{container_name}}

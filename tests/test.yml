@@ -14,7 +14,6 @@
       interface: 0.0.0.0
       config_volume: /srv/docker/samba/config
       data_volume: /srv/docker/samba/data
-      log_volume: /var/log/samba
       log_level: 2
       users:
         - username: user1
