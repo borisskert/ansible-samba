@@ -1,0 +1,79 @@
+---
+- name: Create samba config file
+  template:
+    src: smb.conf.j2
+    dest: "{{config_volume}}/etc/samba/smb.conf"
+    owner: root
+    group: root
+    mode: 0644
+  when: not(
+    (config_volume is undefined)
+    or
+    (config_volume is none)
+    or
+    (config_volume | trim == '')
+    )
+  register: samba_config
+
+- name: Check if passwd db exists
+  stat:
+    path: "{{config_volume}}/etc/passwd"
+  register: passwd_file
+
+- name: Create passwd db file
+  copy:
+    src: files/etc/passwd
+    dest: "{{config_volume}}/etc/passwd"
+    owner: root
+    group: root
+    mode: 0644
+  when: not passwd_file.stat.exists
+    and not(
+    (config_volume is undefined)
+    or
+    (config_volume is none)
+    or
+    (config_volume | trim == '')
+    )
+
+- name: Check if shadow db exists
+  stat:
+    path: "{{config_volume}}/etc/shadow"
+  register: shadow_file
+
+- name: Create shadow db file
+  copy:
+    src: files/etc/shadow
+    dest: "{{config_volume}}/etc/shadow"
+    owner: root
+    group: root
+    mode: 0640
+  when: not shadow_file.stat.exists
+    and not(
+    (config_volume is undefined)
+    or
+    (config_volume is none)
+    or
+    (config_volume | trim == '')
+    )
+
+- name: Check if group db exists
+  stat:
+    path: "{{config_volume}}/etc/group"
+  register: group_file
+
+- name: Create group db file
+  copy:
+    src: files/etc/group
+    dest: "{{config_volume}}/etc/group"
+    owner: root
+    group: root
+    mode: 0644
+  when: not group_file.stat.exists
+    and not(
+    (config_volume is undefined)
+    or
+    (config_volume is none)
+    or
+    (config_volume | trim == '')
+    )

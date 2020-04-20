@@ -19,14 +19,16 @@
       users:
         - username: user1
           password: user1pwd
+          uid: 2001
         - username: user2
           password: user2pwd
+          uid: 2002
       storages:
         - name: Share
           path: /share
           host_path: /srv/docker/samba/storage/share
           comment: Share storage
-          browseable: yess
+          browseable: yes
           writable: yes
           guest_access: yes
         - name: Outgoing

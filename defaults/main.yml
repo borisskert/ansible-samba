@@ -1,5 +1,5 @@
 ---
-image_name: dperson/samba
+image_name: local/samba
 image_version: latest
 
 service_name: samba
@@ -20,3 +20,7 @@ users: []
 log_level: ''
 
 samba_user: '1000'
+
+working_directory: /opt/samba
+dockerfile_path: "{{working_directory}}/docker"
+force_build: no

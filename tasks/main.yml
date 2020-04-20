@@ -1,22 +1,7 @@
 ---
 - include: create-docker-image.yml
 - include: create_volumes.yml
-
-- name: Create samba config file
-  template:
-    src: smb.conf.j2
-    dest: "{{config_volume}}/smb.conf"
-    owner: "{{samba_user}}"
-    group: "{{samba_user}}"
-    mode: 0644
-  when: not(
-    (config_volume is undefined)
-    or
-    (config_volume is none)
-    or
-    (config_volume | trim == '')
-    )
-  register: samba_config
+- include: initialize-config.yml
 
 - name: Create systemd unit file
   template:
@@ -46,4 +31,5 @@
     name: "{{service_name}}"
     state: started
 
-- include: create-samba-users.yml
+- include: create-samba-user.yml
+  with_items: "{{users}}"

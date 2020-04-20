@@ -1,6 +1,51 @@
 ---
-- name: pull image
+- name: create dockerimage directory
+  file:
+    path: "{{dockerfile_path}}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Copy add-user script
+  copy:
+    src: files/add-samba-user.sh
+    dest: "{{dockerfile_path}}/add-samba-user.sh"
+    owner: root
+    group: root
+    mode: 0755
+  register: docker_add_user_script
+
+- name: Copy supervisor config
+  copy:
+    src: files/supervisord.conf
+    dest: "{{dockerfile_path}}/supervisord.conf"
+    owner: root
+    group: root
+    mode: 0644
+  register: docker_supervisor_config
+
+- name: template dockerfile
+  template:
+    src: Dockerfile.j2
+    dest: "{{dockerfile_path}}/Dockerfile"
+    owner: root
+    group: root
+    mode: 0644
+  register: dockerfile
+
+- name: build dockerimage
   docker_image:
-    name: "{{image_name}}:{{image_version}}"
-    source: pull
+    build:
+      path: "{{dockerfile_path}}"
+      pull: no
+    name: "{{image_name}}"
+    tag: "{{image_version}}"
+    source: build
+    force_source: "{{
+      dockerfile.changed
+      or docker_add_user_script.changed
+      or docker_supervisor_config.changed
+      or force_build
+      }}"
   register: dockerimage

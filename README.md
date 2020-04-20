@@ -13,7 +13,7 @@ Installs samba-server as docker container.
 
 ## What does this role
 
-* Pull docker image from dperson/samba
+* Build docker image
 * Create volume paths for docker container
 * Template the samba config
 * Setup systemd unit file
@@ -65,7 +65,7 @@ Installs samba-server as docker container.
 ### Requirements
 
 ```yaml
-- name: install-docker
+- name: install-samba
   src: https://github.com/borisskert/ansible-samba.git
   scm: git
 ```

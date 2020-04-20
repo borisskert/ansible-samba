@@ -14,6 +14,36 @@
     (config_volume | trim == '')
     )
 
+- name: Create config directory structure
+  file:
+    path: "{{config_volume}}/etc"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+  when: not(
+    (config_volume is undefined)
+    or
+    (config_volume is none)
+    or
+    (config_volume | trim == '')
+    )
+
+- name: Create etc/samba directory
+  file:
+    path: "{{config_volume}}/etc/samba"
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+  when: not(
+    (config_volume is undefined)
+    or
+    (config_volume is none)
+    or
+    (config_volume | trim == '')
+    )
+
 - name: create log directory
   file:
     path: "{{log_volume}}"

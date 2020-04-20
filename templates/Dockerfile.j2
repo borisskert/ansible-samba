@@ -1,0 +1,15 @@
+FROM alpine
+
+MAINTAINER borisskert <boris.skert@gmail.com>
+
+RUN apk --no-cache --no-progress upgrade && \
+    apk --no-cache --no-progress add bash samba samba-common-tools supervisor
+
+COPY add-samba-user.sh /add-samba-user.sh
+COPY supervisord.conf /supervisord.conf
+
+VOLUME ["/etc", "/var/lib/samba", "/var/log/samba", "/var/cache/samba", "/run/samba"]
+
+EXPOSE 135/tcp 137/udp 138/udp 139/tcp 445/tcp
+
+ENTRYPOINT ["supervisord", "-c", "/supervisord.conf"]

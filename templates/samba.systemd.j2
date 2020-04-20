@@ -8,11 +8,11 @@ Requires=docker.service
 
 [Service]
 ExecStartPre=-/usr/bin/docker rm -f {{container_name}}
-ExecStartPre=/usr/bin/docker pull {{image_name}}:{{image_version}}
+ExecStartPre=/usr/bin/docker build --tag {{image_name}}:{{image_version}} {{dockerfile_path}}
 
 ExecStart=/usr/bin/docker run --name {{container_name}} \
 {% if config_volume != "" %}
-            --volume {{config_volume}}:/etc/samba \
+            --volume {{config_volume}}/etc:/etc \
 {% endif %}
 {% if log_volume != "" %}
             --volume {{log_volume}}:/var/log/samba \
@@ -23,8 +23,6 @@ ExecStart=/usr/bin/docker run --name {{container_name}} \
 {% for storage in storages %}
             --volume {{storage.host_path}}:/storage{{storage.path}} \
 {% endfor %}
-            --env USERID={{samba_user}} \
-            --env GROUPID={{samba_user}} \
 {% if samba_port != "" %}
             --publish {{interface}}:{{samba_port}}:445/tcp \
 {% endif %}
@@ -35,6 +33,7 @@ ExecStart=/usr/bin/docker run --name {{container_name}} \
 {% endif %}
             --tmpfs /tmp \
             --tmpfs /var/cache/samba \
+            --tmpfs /run/samba \
             {{image_name}}:{{image_version}}
 
 ExecStop=-/usr/bin/docker stop {{container_name}}

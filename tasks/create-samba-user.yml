@@ -1,0 +1,5 @@
+---
+- name: Create samba user with id
+  shell: '/usr/bin/docker exec {{container_name}} /add-samba-user.sh {{item.username}} {{item.password}} {{item.uid}}'
+  register: created_user
+  changed_when: created_user.stdout | length > 0
