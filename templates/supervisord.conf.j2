@@ -10,9 +10,11 @@ stdout_logfile_maxbytes=0
 stderr_logfile=/dev/stderr
 stderr_logfile_maxbytes=0
 
+{% if enable_netbios is defined and enable_netbios | bool %}
 [program:nmbd]
 command=nmbd --foreground --no-process-group --log-stdout
 stdout_logfile=/dev/stdout
 stdout_logfile_maxbytes=0
 stderr_logfile=/dev/stderr
 stderr_logfile_maxbytes=0
+{% endif %}

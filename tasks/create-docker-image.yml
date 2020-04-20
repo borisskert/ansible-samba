@@ -16,9 +16,9 @@
     mode: 0755
   register: docker_add_user_script
 
-- name: Copy supervisor config
-  copy:
-    src: files/supervisord.conf
+- name: Create supervisor config
+  template:
+    src: supervisord.conf.j2
     dest: "{{dockerfile_path}}/supervisord.conf"
     owner: root
     group: root
