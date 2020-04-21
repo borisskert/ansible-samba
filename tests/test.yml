@@ -48,3 +48,14 @@
           guest_access: no
           write_list:
             - user1
+
+    - role: install-avahi
+      published_services:
+        - name: timemachine
+          services:
+            - type: _smb._tcp
+              port: 445
+            - type: _device-info._tcp
+              port: 0
+              txt_records:
+                - model=RackMac
