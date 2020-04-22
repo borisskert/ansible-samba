@@ -4,48 +4,61 @@
   security = user
   map to guest = Bad User
   load printers = no
-  printing = bsd
-  printcap name = /dev/null
-  disable spoolss = yes
 {% if enable_netbios is defined and enable_netbios | bool %}
   disable netbios = no
+{% if netbios_name is defined and netbios_name | length > 0 %}
+  netbios name = {{netbios_name}}
+{% endif %}
 {% else %}
   disable netbios = yes
 {% endif %}
   server role = standalone
-  server services = -dns, -nbt
   smb ports = 445
-  ;name resolve order = hosts
 {% if log_level is defined %}
   log level = {{log_level}}
 {% endif %}
-  log file = /var/log/samba/%m.log
-
+{% if unix_extensions is defined and unix_extensions | bool %}
+  unix extensions = yes
+{% elif unix_extensions is defined and not (unix_extensions | bool) %}
+  unix extensions = no
+{% endif %}
 {% for storage in storages %}
+
 [{{storage.name}}]
+{% if storage.host_path is defined and storage.host_path | length > 0 %}
+  path = {{storage.path}}
+{% else %}
   path = /storage{{storage.path}}
+{% endif %}
   comment = {{storage.comment}}
 {% if storage.browseable is defined and storage.browseable | bool %}
   browseable = yes
-{% else %}
+{% elif storage.browseable is defined and not (storage.browseable | bool) %}
   browseable = no
 {% endif %}
 {% if storage.writable is defined and storage.writable | bool %}
   writable = yes
-{% else %}
+{% elif storage.writable is defined and not (storage.writable | bool) %}
   writable = no
 {% endif %}
 {% if storage.readonly is defined and storage.readonly | bool %}
   read only = yes
-{% else %}
+{% elif storage.readonly is defined and not (storage.readonly | bool) %}
   read only = no
 {% endif %}
 {% if storage.guest_access is defined and storage.guest_access | bool %}
   guest ok = yes
+{% elif storage.guest_access is defined and not (storage.guest_access | bool) %}
+  guest ok = no
+{% endif %}
+{% if storage.is_public is defined and storage.is_public | bool %}
+  public = yes
+{% elif storage.is_public is defined and not (storage.is_public | bool) %}
+  public = no
 {% endif %}
 {% if storage.delete_readonly is defined and storage.delete_readonly | bool %}
   delete readonly = yes
-{% else %}
+{% elif storage.delete_readonly is defined and not (storage.delete_readonly | bool) %}
   delete readonly = no
 {% endif %}
 {% if storage.force_user is defined and storage.force_user != '' %}
@@ -54,8 +67,31 @@
 {% if storage.write_list is defined %}
   write list = {% for writer in storage.write_list %}{{writer}} {% endfor %}
 {% endif %}
+{% if storage.create_mask is defined and storage.create_mask | length > 0 %}
+  create mask = {{storage.create_mask}}
+{% endif %}
+{% if storage.directory_mask is defined  and storage.directory_mask | length > 0 %}
+  directory mask = {{storage.directory_mask}}
+{% endif %}
+{% if storage.force_user is defined and storage.force_user | length > 0 %}
+  force user = {{storage.force_user}}
+{% endif %}
+{% if storage.force_group is defined and storage.force_group | length > 0 %}
+  force group = {{storage.force_group}}
+{% endif %}
 
   # getting rid of those annoying .DS_Store files created by Mac users...
   veto files = /._*/.DS_Store/
   delete veto files = yes
 {% endfor %}
+
+{% if enable_homes is defined and enable_homes | bool %}
+
+[homes]
+  comment = Home Directories
+  browseable = no
+  valid users = %S
+  writeable = yes
+  create mode = 0600
+  directory mode = 0700
+{% endif %}

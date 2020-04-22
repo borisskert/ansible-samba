@@ -10,11 +10,15 @@
 
     - role: ansible-samba
       samba_port: 445
-      enable_netbios: yes
       interface: 0.0.0.0
       config_volume: /srv/docker/samba/config
       data_volume: /srv/docker/samba/data
+      storage_volume: /srv/docker/samba/storage
       log_level: 2
+      enable_homes: yes
+      enable_netbios: yes
+      netbios_name: mysamba
+      unix_extensions: no
       users:
         - username: user1
           password: user1pwd
@@ -23,35 +27,29 @@
           password: user2pwd
           uid: 2002
       storages:
+
+        # this share has its own location
         - name: Share
           path: /share
-          host_path: /srv/docker/samba/storage/share
+          host_path: /srv/docker/samba/storage_share
           comment: Share storage
           browseable: yes
           writable: yes
           guest_access: yes
+
+        # this share is located within storage volume
         - name: Outgoing
           path: /out
-          host_path: /srv/docker/samba/storage/out
           comment: Outgoing storage
           browseable: yes
           writable: no
           guest_access: true
           write_list:
             - user1
-        - name: user1
-          path: /user1
-          host_path: /srv/docker/samba/storage/user1
-          comment: user1 Home
-          browseable: yes
-          writable: yes
-          guest_access: no
-          write_list:
-            - user1
 
     - role: install-avahi
       published_services:
-        - name: timemachine
+        - name: samba
           services:
             - type: _smb._tcp
               port: 445

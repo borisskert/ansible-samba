@@ -33,10 +33,14 @@ Installs samba-server as docker container.
 | interface             | ip address | no | 0.0.0.0                 | Mapped network for web-interface ports |
 | samba_port            | port       | no | <empty>                 | Default port (TCP): 445                |
 | enable_netbios        | boolean    | no | no                      | Enables NetBios option and publish ports 137, 138 and 138 |
+| netbios_name          | text       | no | <empty>                 | Configures the NetBios name                               |
 | config_volume         | path       | no | <empty>                 | Path to config volume                  |
 | data_volume           | path       | no | <empty>                 | Path to data volume                    |
+| storage_volume        | path       | no | <empty>                 | Path to storages volume                    |
 | workgroup             | text       | no | WORKGROUP               | The default Samba workgroup            |
 | server_string         | text       | no | "%h server (Samba, Alpine)" | The default Samba server string    |
+| enable_homes          | boolean    | no | no                          | Enables home directories for users |
+| unix_extensions       | boolean    | no | <empty>                     | Enable or disable UNIX extensions  |
 | storages              | array of storage | no | <empty array>         | The samba storage configuration    |
 | users                 | array of user    | no | <empty array>         | The samba user configuration       |
 
@@ -45,7 +49,7 @@ Installs samba-server as docker container.
 | Property      | Type | Mandatory? | Description           |
 |---------------|------|------------|-----------------------|
 | name          | text | no         | The name of the storage |
-| path          | path | no         | The internal path of the storage (within docker-container) |
+| path          | path | yes        | The internal path of the storage (within docker-container) |
 | host_path     | path | no         | The external path of the storage (on the host system)      |
 | comment       | text | no         | The comment of the storage                                 |
 | browseable    | boolean | no      | Is the storage browseable?                                 |
@@ -82,36 +86,37 @@ Installs samba-server as docker container.
       interface: 0.0.0.0
       config_volume: /srv/docker/samba/config
       data_volume: /srv/docker/samba/data
+      storage_volume: /srv/docker/samba/storage
+      log_level: 2
+      enable_homes: no
       enable_netbios: yes
+      netbios_name: mysamba
+      unix_extensions: no
       users:
         - username: user1
           password: user1pwd
+          uid: 2001
         - username: user2
           password: user2pwd
+          uid: 2002
       storages:
+
+        # this share has its own location
         - name: Share
           path: /share
-          host_path: /srv/docker/samba/storage/share
+          host_path: /srv/docker/samba/storage_share
           comment: Share storage
-          browseable: yess
+          browseable: yes
           writable: yes
           guest_access: yes
+
+        # this share is located within storage volume
         - name: Outgoing
           path: /out
-          host_path: /srv/docker/samba/storage/out
           comment: Outgoing storage
           browseable: yes
           writable: no
           guest_access: true
-          write_list:
-            - user1
-        - name: user1
-          path: /user1
-          host_path: /srv/docker/samba/storage/user1
-          comment: user1 Home
-          browseable: yes
-          writable: yes
-          guest_access: no
           write_list:
             - user1
 ```

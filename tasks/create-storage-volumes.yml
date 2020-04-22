@@ -1,0 +1,46 @@
+---
+
+- name: create storage directory
+  file:
+    path: "{{storage_volume}}"
+    state: directory
+    owner: "{{samba_user}}"
+    group: "{{samba_user}}"
+    mode: 0777
+  when: >
+    storage_volume is defined
+    and storage_volume | length < 1
+
+- name: Select storages with host path
+  set_fact:
+    storages_with_host_path: "{{
+      storages
+      | selectattr('host_path', 'defined')
+      | list
+      }}"
+
+- name: Create storage host directories
+  file:
+    path: "{{item.host_path}}"
+    state: directory
+    owner: "{{samba_user}}"
+    group: "{{samba_user}}"
+    mode: 0777
+  with_items: "{{storages_with_host_path}}"
+
+- name: Select storages without host path
+  set_fact:
+    storages_without_host_path: "{{
+      storages
+      | selectattr('host_path', 'undefined')
+      | list
+      }}"
+
+- name: Create storage directories
+  file:
+    path: "{{storage_volume}}{{item.path}}"
+    state: directory
+    owner: "{{samba_user}}"
+    group: "{{samba_user}}"
+    mode: 0777
+  with_items: "{{storages_without_host_path}}"

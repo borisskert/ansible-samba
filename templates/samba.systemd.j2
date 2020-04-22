@@ -17,8 +17,13 @@ ExecStart=/usr/bin/docker run --name {{container_name}} \
 {% if data_volume != "" %}
             --volume {{data_volume}}:/var/lib/samba \
 {% endif %}
+{% if storage_volume is defined and storage_volume | length > 0 %}
+            --volume {{storage_volume}}:/storage \
+{% endif %}
 {% for storage in storages %}
-            --volume {{storage.host_path}}:/storage{{storage.path}} \
+{% if storage.host_path is defined and storage.host_path | length > 0 %}
+            --volume {{storage.host_path}}:{{storage.path}} \
+{% endif %}
 {% endfor %}
 {% if samba_port != "" %}
             --publish {{interface}}:{{samba_port}}:445/tcp \

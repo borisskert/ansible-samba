@@ -7,15 +7,18 @@ container_name: "{{service_name}}.service"
 
 config_volume: ''
 data_volume: ''
+storage_volume: ''
 
 interface: 0.0.0.0
 samba_port: ''
 enable_netbios: no
+netbios_name: ''
 
 workgroup: WORKGROUP
 server_string: "%h server (Samba, Alpine)"
 storages: []
 users: []
+enable_homes: no
 log_level: ''
 
 samba_user: '1000'
