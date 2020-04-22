@@ -11,10 +11,7 @@
     - role: ansible-samba
       samba_port: 445
       interface: 0.0.0.0
-      config_volume: /srv/docker/samba/config
-      data_volume: /srv/docker/samba/data
-      storages_volume: /srv/docker/samba/storages
-      homes_volume: /srv/docker/samba/homes
+      volumes_path: /srv/samba
       log_level: 2
       enable_homes: yes
       enable_netbios: yes
@@ -32,7 +29,7 @@
         # this share has its own location
         - name: Share
           path: /share
-          host_path: /srv/docker/samba/storage_share
+          host_path: /srv/samba/storage_share
           comment: Share storage
           browseable: yes
           writable: yes

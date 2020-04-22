@@ -6,13 +6,6 @@
     owner: root
     group: root
     mode: 0755
-  when: not(
-    (config_volume is undefined)
-    or
-    (config_volume is none)
-    or
-    (config_volume | trim == '')
-    )
 
 - name: Create config directory structure
   file:
@@ -21,13 +14,6 @@
     owner: root
     group: root
     mode: 0755
-  when: not(
-    (config_volume is undefined)
-    or
-    (config_volume is none)
-    or
-    (config_volume | trim == '')
-    )
 
 - name: Create etc/samba directory
   file:
@@ -36,13 +22,6 @@
     owner: root
     group: root
     mode: 0755
-  when: not(
-    (config_volume is undefined)
-    or
-    (config_volume is none)
-    or
-    (config_volume | trim == '')
-    )
 
 - name: create data directory
   file:
@@ -51,13 +30,6 @@
     owner: root
     group: root
     mode: 0775
-  when: not(
-    (data_volume is undefined)
-    or
-    (data_volume is none)
-    or
-    (data_volume | trim == '')
-    )
 
 # otherwise, samba will not start and crash with an error
 - name: create data/private directory
@@ -67,13 +39,6 @@
     owner: root
     group: root
     mode: 0775
-  when: not(
-    (data_volume is undefined)
-    or
-    (data_volume is none)
-    or
-    (data_volume | trim == '')
-    )
 
 - include: create-storage-volumes.yml
 
@@ -84,5 +49,3 @@
     owner: root
     group: root
     mode: 0775
-  when: homes_volume is defined
-    and homes_volume | length > 0

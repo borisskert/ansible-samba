@@ -1,0 +1,35 @@
+---
+- name: check 'volumes_path' parameter
+  assert:
+    that:
+      - "volumes_path is defined"
+      - "volumes_path | length > 0"
+    fail_msg: "parameter 'volumes_path' is missing"
+
+- name: check 'config_volume' parameter
+  assert:
+    that:
+      - "config_volume is defined"
+      - "config_volume | length > 0"
+    fail_msg: "parameter 'config_volume' is missing"
+
+- name: check 'data_volume' parameter
+  assert:
+    that:
+      - "data_volume is defined"
+      - "data_volume | length > 0"
+    fail_msg: "parameter 'data_volume' is missing"
+
+- name: check 'storages_volume' parameter
+  assert:
+    that:
+      - "storages_volume is defined"
+      - "storages_volume | length > 0"
+    fail_msg: "parameter 'storages_volume' is missing"
+
+- name: check 'homes_volume' parameter
+  assert:
+    that:
+      - "homes_volume is defined"
+      - "homes_volume | length > 0"
+    fail_msg: "parameter 'homes_volume' is missing"

@@ -7,9 +7,6 @@
     owner: root
     group: root
     mode: 0777
-  when: >
-    storages_volume is defined
-    and storages_volume | length < 1
 
 - name: Select storages with host path
   set_fact:

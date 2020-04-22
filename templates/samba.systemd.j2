@@ -11,18 +11,10 @@ ExecStartPre=-/usr/bin/docker rm -f {{container_name}}
 ExecStartPre=/usr/bin/docker build --tag {{image_name}}:{{image_version}} {{dockerfile_path}}
 
 ExecStart=/usr/bin/docker run --name {{container_name}} \
-{% if config_volume != "" %}
             --volume {{config_volume}}/etc:/etc \
-{% endif %}
-{% if data_volume != "" %}
             --volume {{data_volume}}:/var/lib/samba \
-{% endif %}
-{% if storages_volume is defined and storages_volume | length > 0 %}
             --volume {{storages_volume}}:/storages \
-{% endif %}
-{% if homes_volume is defined and homes_volume | length > 0 %}
             --volume {{homes_volume}}:/home \
-{% endif %}
 {% for storage in storages %}
 {% if storage.host_path is defined and storage.host_path | length > 0 %}
             --volume {{storage.host_path}}:{{storage.path}} \
