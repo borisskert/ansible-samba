@@ -13,7 +13,8 @@
       interface: 0.0.0.0
       config_volume: /srv/docker/samba/config
       data_volume: /srv/docker/samba/data
-      storage_volume: /srv/docker/samba/storage
+      storages_volume: /srv/docker/samba/storages
+      homes_volume: /srv/docker/samba/homes
       log_level: 2
       enable_homes: yes
       enable_netbios: yes

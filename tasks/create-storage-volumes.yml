@@ -2,14 +2,14 @@
 
 - name: create storage directory
   file:
-    path: "{{storage_volume}}"
+    path: "{{storages_volume}}"
     state: directory
     owner: "{{samba_user}}"
     group: "{{samba_user}}"
     mode: 0777
   when: >
-    storage_volume is defined
-    and storage_volume | length < 1
+    storages_volume is defined
+    and storages_volume | length < 1
 
 - name: Select storages with host path
   set_fact:
@@ -38,7 +38,7 @@
 
 - name: Create storage directories
   file:
-    path: "{{storage_volume}}{{item.path}}"
+    path: "{{storages_volume}}{{item.path}}"
     state: directory
     owner: "{{samba_user}}"
     group: "{{samba_user}}"

@@ -76,3 +76,13 @@
     )
 
 - include: create-storage-volumes.yml
+
+- name: create homes volume
+  file:
+    path: "{{homes_volume}}"
+    state: directory
+    owner: root
+    group: root
+    mode: 0775
+  when: homes_volume is defined
+    and homes_volume | length > 0

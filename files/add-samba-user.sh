@@ -30,7 +30,7 @@ create_group() {
 }
 
 create_user() {
-  adduser ${user_id:+-u $user_id} -D -H -G "$group" "$user"
+  adduser ${user_id:+-u $user_id} -D -G "$group" "$user"
   echo -e "$password\n$password" | smbpasswd -s -a "$user"
 }
 

@@ -7,7 +7,8 @@ container_name: "{{service_name}}.service"
 
 config_volume: ''
 data_volume: ''
-storage_volume: ''
+storages_volume: ''
+homes_volume: ''
 
 interface: 0.0.0.0
 samba_port: ''

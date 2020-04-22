@@ -17,8 +17,11 @@ ExecStart=/usr/bin/docker run --name {{container_name}} \
 {% if data_volume != "" %}
             --volume {{data_volume}}:/var/lib/samba \
 {% endif %}
-{% if storage_volume is defined and storage_volume | length > 0 %}
-            --volume {{storage_volume}}:/storage \
+{% if storages_volume is defined and storages_volume | length > 0 %}
+            --volume {{storages_volume}}:/storages \
+{% endif %}
+{% if homes_volume is defined and homes_volume | length > 0 %}
+            --volume {{homes_volume}}:/home \
 {% endif %}
 {% for storage in storages %}
 {% if storage.host_path is defined and storage.host_path | length > 0 %}

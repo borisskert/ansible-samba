@@ -28,7 +28,7 @@
 {% if storage.host_path is defined and storage.host_path | length > 0 %}
   path = {{storage.path}}
 {% else %}
-  path = /storage{{storage.path}}
+  path = /storages{{storage.path}}
 {% endif %}
   comment = {{storage.comment}}
 {% if storage.browseable is defined and storage.browseable | bool %}

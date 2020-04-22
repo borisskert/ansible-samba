@@ -36,7 +36,8 @@ Installs samba-server as docker container.
 | netbios_name          | text       | no | <empty>                 | Configures the NetBios name                               |
 | config_volume         | path       | no | <empty>                 | Path to config volume                  |
 | data_volume           | path       | no | <empty>                 | Path to data volume                    |
-| storage_volume        | path       | no | <empty>                 | Path to storages volume                    |
+| storages_volume       | path       | no | <empty>                 | Path to storages volume                |
+| homes_volume          | path       | no | <empty>                 | Path to homes volume                   |
 | workgroup             | text       | no | WORKGROUP               | The default Samba workgroup            |
 | server_string         | text       | no | "%h server (Samba, Alpine)" | The default Samba server string    |
 | enable_homes          | boolean    | no | no                          | Enables home directories for users |
@@ -86,7 +87,7 @@ Installs samba-server as docker container.
       interface: 0.0.0.0
       config_volume: /srv/docker/samba/config
       data_volume: /srv/docker/samba/data
-      storage_volume: /srv/docker/samba/storage
+      storages_volume: /srv/docker/samba/storage
       log_level: 2
       enable_homes: no
       enable_netbios: yes
