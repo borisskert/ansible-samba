@@ -22,8 +22,6 @@ users: []
 enable_homes: no
 log_level: ''
 
-samba_user: '1000'
-
 working_directory: /opt/samba
 dockerfile_path: "{{working_directory}}/docker"
 force_build: no

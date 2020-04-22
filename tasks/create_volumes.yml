@@ -3,8 +3,8 @@
   file:
     path: "{{config_volume}}"
     state: directory
-    owner: "{{samba_user}}"
-    group: "{{samba_user}}"
+    owner: root
+    group: root
     mode: 0755
   when: not(
     (config_volume is undefined)
