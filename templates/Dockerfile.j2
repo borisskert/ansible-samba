@@ -1,9 +1,26 @@
+{% if alpine_version is not defined or alpine_version == 'latest' %}
 FROM alpine
+{% else %}
+FROM alpine:{{alpine_version}}
+{% endif %}
 
 MAINTAINER borisskert <boris.skert@gmail.com>
 
+{% if samba_version is defined and not samba_version == 'latest' %}
+ENV SAMBA_VERSION={{samba_version}}
+{% endif %}
+
 RUN apk --no-cache --no-progress upgrade && \
-    apk --no-cache --no-progress add bash samba samba-common-tools supervisor
+    apk --no-cache --no-progress add \
+        bash \
+        supervisor \
+{% if samba_version is not defined or samba_version == 'latest' %}
+        samba \
+        samba-common-tools
+{% else %}
+        samba=${SAMBA_VERSION} \
+        samba-common-tools=${SAMBA_VERSION}
+{% endif %}
 
 COPY add-samba-user.sh /add-samba-user.sh
 COPY supervisord.conf /supervisord.conf

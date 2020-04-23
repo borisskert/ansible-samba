@@ -26,7 +26,8 @@ Installs samba-server as docker container.
 
 | Variable      | Type | Mandatory? | Default | Description           |
 |---------------|------|------------|---------|-----------------------|
-| samba_version         | text | no | latest | Your selected samba version |
+| alpine_version        | text | no | latest | Your selected alpine version |
+| samba_version         | text | no | latest | Your selected samba version  |
 | image_name            | text | no | local/samba-server | Docker image name                                 |
 | image_version         | text | no | same of samba_version | Docker image version                           |
 | container_name        | text | no | samba.service                 | The name of the docker container       |
