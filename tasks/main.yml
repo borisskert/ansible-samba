@@ -1,7 +1,7 @@
 ---
 - include: check-parameters.yml
 - include: create-docker-image.yml
-- include: create_volumes.yml
+- include: create-volumes.yml
 - include: initialize-config.yml
 
 - name: Create systemd unit file

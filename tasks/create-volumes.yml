@@ -1,5 +1,5 @@
 ---
-- name: create config directory
+- name: Create config directory
   file:
     path: "{{config_volume}}"
     state: directory
@@ -23,7 +23,7 @@
     group: root
     mode: 0755
 
-- name: create data directory
+- name: Create data directory
   file:
     path: "{{data_volume}}"
     state: directory
@@ -32,7 +32,7 @@
     mode: 0775
 
 # otherwise, samba will not start and crash with an error
-- name: create data/private directory
+- name: Create data/private directory
   file:
     path: "{{data_volume}}/private"
     state: directory
@@ -42,7 +42,7 @@
 
 - include: create-storage-volumes.yml
 
-- name: create homes volume
+- name: Create homes volume
   file:
     path: "{{homes_volume}}"
     state: directory

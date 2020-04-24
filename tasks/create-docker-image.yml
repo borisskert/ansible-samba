@@ -1,5 +1,5 @@
 ---
-- name: create dockerimage directory
+- name: Create dockerimage directory
   file:
     path: "{{dockerfile_path}}"
     state: directory
@@ -25,7 +25,7 @@
     mode: 0644
   register: docker_supervisor_config
 
-- name: template dockerfile
+- name: Template dockerfile
   template:
     src: Dockerfile.j2
     dest: "{{dockerfile_path}}/Dockerfile"
@@ -34,7 +34,7 @@
     mode: 0644
   register: dockerfile
 
-- name: build dockerimage
+- name: Build dockerimage
   docker_image:
     build:
       path: "{{dockerfile_path}}"

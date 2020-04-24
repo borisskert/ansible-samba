@@ -1,6 +1,6 @@
 ---
 
-- name: create storage directory
+- name: Create storage directory
   file:
     path: "{{storages_volume}}"
     state: directory
