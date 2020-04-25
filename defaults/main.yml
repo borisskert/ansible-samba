@@ -3,7 +3,6 @@ alpine_version: latest
 samba_version: latest
 
 image_name: local/samba
-image_version: latest
 
 service_name: samba
 container_name: "{{service_name}}.service"

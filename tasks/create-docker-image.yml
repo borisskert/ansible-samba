@@ -40,8 +40,9 @@
       path: "{{dockerfile_path}}"
       pull: no
     name: "{{image_name}}"
-    tag: "{{image_version}}"
+    tag: "{{samba_version}}"
     source: build
+    state: present
     force_source: "{{
       dockerfile.changed
       or docker_add_user_script.changed

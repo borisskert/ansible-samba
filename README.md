@@ -29,7 +29,6 @@ Installs samba-server as docker container.
 | alpine_version        | text | no | latest | Your selected alpine version |
 | samba_version         | text | no | latest | Your selected samba version  |
 | image_name            | text | no | local/samba-server | Docker image name                                 |
-| image_version         | text | no | same of samba_version | Docker image version                           |
 | container_name        | text | no | samba.service                 | The name of the docker container       |
 | interface             | ip address | no | 0.0.0.0                 | Mapped network for web-interface ports |
 | samba_port            | port       | no | <empty>                 | Default port (TCP): 445                |
