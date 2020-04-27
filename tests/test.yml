@@ -21,10 +21,10 @@
       unix_extensions: no
       users:
         - username: user1
-          password: user1pwd
+          password: user$pwd
           uid: 2001
         - username: user2
-          password: user2pwd
+          password: user$pwd
           uid: 2002
       storages:
 
