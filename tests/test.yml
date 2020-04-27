@@ -23,9 +23,11 @@
         - username: user1
           password: user$pwd
           uid: 2001
+          update_password: false
         - username: user2
           password: user$pwd
           uid: 2002
+          update_password: false
       storages:
 
         # this share has its own location

@@ -16,6 +16,15 @@
     mode: 0755
   register: docker_add_user_script
 
+- name: Copy update-password script
+  copy:
+    src: files/update-samba-user-password.sh
+    dest: "{{dockerfile_path}}/update-samba-user-password.sh"
+    owner: root
+    group: root
+    mode: 0755
+  register: docker_update_password_script
+
 - name: Create supervisor config
   template:
     src: supervisord.conf.j2
@@ -46,6 +55,7 @@
     force_source: "{{
       dockerfile.changed
       or docker_add_user_script.changed
+      or docker_update_password_script.changed
       or docker_supervisor_config.changed
       or force_build
       }}"

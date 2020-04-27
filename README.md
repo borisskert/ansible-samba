@@ -65,6 +65,8 @@ Installs samba-server as docker container.
 |---------------|------|------------|-----------------------|
 | username      | text | yes        | Username of the specified user |
 | password      | text | yes        | (Clear text) password of the specified user |
+| uid           | number | yes      | Unix user id                                |
+| update_password | boolean | yes   | Defines if the user password will be updated |
 
 ## Usage
 
@@ -99,6 +101,7 @@ Installs samba-server as docker container.
         - username: user1
           password: user1pwd
           uid: 2001
+          update_password: true
         - username: user2
           password: user2pwd
           uid: 2002

@@ -34,3 +34,10 @@
 
 - include: create-samba-user.yml
   with_items: "{{users}}"
+
+- include: update-password.yml
+  with_items: "{{
+   users
+   | selectattr('update_password', 'true')
+   | list
+   }}"
