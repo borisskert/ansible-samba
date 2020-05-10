@@ -1,6 +1,19 @@
 ---
-- name: Create samba user with id
+- name: Determine if samba user exist
   shell: |
-    /usr/bin/docker exec {{container_name}} /add-samba-user.sh "{{item.username}}" '{{item.password}}' "{{item.uid}}"
-  register: created_user
-  changed_when: created_user.stdout | length > 0
+    set -o pipefail
+    cat {{ config_volume }}/etc/passwd \
+    | grep {{ item.username }}:x:{{ item.uid }}
+  args:
+    executable: /bin/bash
+  register: user_exists
+  changed_when: user_exists.stdout | length < 1
+  failed_when: false
+  notify: Create samba user
+
+# I need this task cause I don't know another way to notify
+# a handler with a parameter or variable
+- name: Users for creation
+  set_fact:
+    users_for_creation: "{{ users_for_creation + [item] }}"
+  when: user_exists.changed  # noqa 503

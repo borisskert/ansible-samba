@@ -15,16 +15,16 @@ homes_volume: "{{volumes_path}}/homes"
 
 interface: 0.0.0.0
 samba_port: ''
-enable_netbios: no
+enable_netbios: false
 netbios_name: ''
 
 workgroup: WORKGROUP
 server_string: "%h server (Samba, Alpine)"
 storages: []
 users: []
-enable_homes: no
+enable_homes: false
 log_level: ''
 
 working_directory: /opt/samba
 dockerfile_path: "{{working_directory}}/docker"
-force_build: no
+force_build: false

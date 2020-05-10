@@ -18,8 +18,8 @@ RUN apk --no-cache --no-progress upgrade && \
         samba \
         samba-common-tools
 {% else %}
-        samba=${SAMBA_VERSION} \
-        samba-common-tools=${SAMBA_VERSION}
+        samba~=${SAMBA_VERSION} \
+        samba-common-tools~=${SAMBA_VERSION}
 {% endif %}
 
 COPY add-samba-user.sh /add-samba-user.sh

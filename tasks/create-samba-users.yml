@@ -1,0 +1,7 @@
+---
+- name: Users for creation
+  set_fact:
+    users_for_creation: []
+
+- include: create-samba-user.yml
+  with_items: "{{ users }}"

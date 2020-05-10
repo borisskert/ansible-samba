@@ -1,0 +1,31 @@
+---
+- name: Reload systemd
+  systemd:
+    daemon_reload: true
+
+- name: Start samba service
+  service:
+    name: "{{ service_name }}"
+    state: started
+  register: samba_service_start
+
+- name: Restart samba service
+  service:
+    name: "{{ service_name }}"
+    state: restarted
+  register: samba_service_restart
+  when: not (
+    samba_service_start is defined
+    and samba_service_start.changed
+    )
+
+# We can create samba users only if the container is already running
+- name: Create samba user
+  shell: |
+    /usr/bin/docker exec {{ container_name }} \
+    /add-samba-user.sh "{{ item.username }}" \
+                       '{{ item.password }}' \
+                       "{{ item.uid }}"
+  register: created_user
+  changed_when: created_user.stdout | length > 0
+  with_items: "{{ users_for_creation }}"

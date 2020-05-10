@@ -87,7 +87,7 @@ Installs samba-server as docker container.
   roles:
     - role: ansible-samba
       alpine_version: 3.11.5
-      samba_version: 4.11.5-r0
+      samba_version: 4.11
       samba_port: 445
       interface: 0.0.0.0
       volumes_path: /srv/samba

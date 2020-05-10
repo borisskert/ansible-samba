@@ -2,7 +2,7 @@
 
 - name: Create storage directory
   file:
-    path: "{{storages_volume}}"
+    path: "{{ storages_volume }}"
     state: directory
     owner: root
     group: root
@@ -18,12 +18,12 @@
 
 - name: Create storage host directories
   file:
-    path: "{{item.host_path}}"
+    path: "{{ item.host_path }}"
     state: directory
     owner: root
     group: root
     mode: 0777
-  with_items: "{{storages_with_host_path}}"
+  with_items: "{{ storages_with_host_path }}"
 
 - name: Select storages without host path
   set_fact:
@@ -35,9 +35,9 @@
 
 - name: Create storage directories
   file:
-    path: "{{storages_volume}}{{item.path}}"
+    path: "{{ storages_volume }}{{ item.path }}"
     state: directory
     owner: root
     group: root
     mode: 0777
-  with_items: "{{storages_without_host_path}}"
+  with_items: "{{ storages_without_host_path }}"

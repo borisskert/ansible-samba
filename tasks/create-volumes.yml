@@ -1,51 +1,51 @@
 ---
 - name: Create config directory
   file:
-    path: "{{config_volume}}"
+    path: "{{ config_volume }}"
     state: directory
     owner: root
     group: root
-    mode: 0755
+    mode: 0750
 
 - name: Create config directory structure
   file:
-    path: "{{config_volume}}/etc"
+    path: "{{ config_volume }}/etc"
     state: directory
     owner: root
     group: root
-    mode: 0755
+    mode: 0750
 
 - name: Create etc/samba directory
   file:
-    path: "{{config_volume}}/etc/samba"
+    path: "{{ config_volume }}/etc/samba"
     state: directory
     owner: root
     group: root
-    mode: 0755
+    mode: 0750
 
 - name: Create data directory
   file:
-    path: "{{data_volume}}"
+    path: "{{ data_volume }}"
     state: directory
     owner: root
     group: root
-    mode: 0775
+    mode: 0750
 
 # otherwise, samba will not start and crash with an error
 - name: Create data/private directory
   file:
-    path: "{{data_volume}}/private"
+    path: "{{ data_volume }}/private"
     state: directory
     owner: root
     group: root
-    mode: 0775
+    mode: 0750
 
 - include: create-storage-volumes.yml
 
 - name: Create homes volume
   file:
-    path: "{{homes_volume}}"
+    path: "{{ homes_volume }}"
     state: directory
     owner: root
     group: root
-    mode: 0775
+    mode: 0755
