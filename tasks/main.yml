@@ -22,6 +22,10 @@
   register: service_state
   changed_when: service_state.status.SubState != 'running'
   notify: Start samba service
+  when: not (
+    molecule_docker_environment is defined
+    and molecule_docker_environment | bool
+    )
 
 - include: create-samba-users.yml
 

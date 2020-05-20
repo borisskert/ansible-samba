@@ -8,6 +8,10 @@
     executable: /bin/bash
   register: user_exists
   changed_when: user_exists.stdout | length < 1
+    and not (
+    molecule_docker_environment is defined
+    and molecule_docker_environment | bool
+    )
   failed_when: false
   notify: Create samba user
 

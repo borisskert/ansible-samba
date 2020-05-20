@@ -1,16 +1,12 @@
 ---
-- hosts: test_machine
+- name: Converge
+  hosts: all
   become: true
 
   roles:
-    - role: install-docker
-      storage_driver: overlay2
-      cleanup_enabled: true
-      install_pip_docker: true
-
     - role: ansible-samba
-      alpine_version: 3.11.6
-      samba_version: 4.11.8
+      alpine_version: '3.11'
+      samba_version: '4.11'
       samba_port: 445
       interface: 0.0.0.0
       volumes_path: /srv/samba
@@ -29,8 +25,6 @@
           uid: 2002
           update_password: false
       storages:
-
-        # this share has its own location
         - name: Share
           path: /share
           host_path: /srv/samba/storage_share
@@ -38,8 +32,14 @@
           browseable: true
           writable: true
           guest_access: true
-
-        # this share is located within storage volume
+        - name: Outgoing
+          path: /out
+          comment: Outgoing storage
+          browseable: true
+          writable: false
+          guest_access: true
+          write_list:
+            - user1
         - name: Outgoing
           path: /out
           comment: Outgoing storage

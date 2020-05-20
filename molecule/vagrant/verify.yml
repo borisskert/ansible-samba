@@ -1,0 +1,14 @@
+---
+- name: Verify
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Should open 445/tcp port
+      command: nc -z -w1 localhost 445
+      changed_when: false
+      register: netcat_445
+      retries: 300
+      delay: 1
+      until: netcat_445 is defined
+        and netcat_445.rc == 0

@@ -8,7 +8,7 @@ Requires=docker.service
 
 [Service]
 ExecStartPre=-/usr/bin/docker rm -f {{container_name}}
-ExecStartPre=/usr/bin/docker build --tag {{image_name}}:{{samba_version}} {{dockerfile_path}}
+ExecStartPre=/usr/bin/docker build --cache-from {{image_name}}:{{samba_version}} --tag {{image_name}}:{{samba_version}} {{dockerfile_path}}
 
 ExecStart=/usr/bin/docker run --name {{container_name}} \
             --volume {{config_volume}}/etc:/etc \

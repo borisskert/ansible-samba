@@ -2,6 +2,10 @@
 - name: Reload systemd
   systemd:
     daemon_reload: true
+  when: not (
+    molecule_docker_environment is defined
+    and molecule_docker_environment | bool
+    )
 
 - name: Start samba service
   service:
@@ -18,6 +22,10 @@
     samba_service_start is defined
     and samba_service_start.changed
     )
+    and not (
+    molecule_docker_environment is defined
+    and molecule_docker_environment | bool
+    )
 
 # We can create samba users only if the container is already running
 - name: Create samba user
@@ -29,3 +37,7 @@
   register: created_user
   changed_when: created_user.stdout | length > 0
   with_items: "{{ users_for_creation }}"
+  when: not (
+    molecule_docker_environment is defined
+    and molecule_docker_environment | bool
+    )
