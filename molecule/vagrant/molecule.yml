@@ -10,8 +10,20 @@ driver:
     name: virtualbox
 
 platforms:
-  - name: ansible-samba-xenial
+  - name: ansible-timemachine-xenial
     box: ubuntu/xenial64
+  - name: ansible-timemachine-bionic
+    box: ubuntu/bionic64
+  - name: ansible-timemachine-focal
+    box: ubuntu/focal64
+  - name: ansible-timemachine-stretch
+    box: debian/stretch64
+    groups:
+      - debian
+  - name: ansible-timemachine-buster
+    box: debian/buster64
+    groups:
+      - debian
 
 provisioner:
   name: ansible
@@ -19,10 +31,8 @@ provisioner:
     prepare: ../shared/prepare.yml
     converge: ../shared/converge.yml
   inventory:
-    host_vars:
-      ansible-samba-buster:
-        ansible_python_interpreter: /usr/bin/python3
-      ansible-samba-stretch:
+    group_vars:
+      debian:
         ansible_python_interpreter: /usr/bin/python3
 
 verifier:
