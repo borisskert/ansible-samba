@@ -12,22 +12,22 @@
     group: root
     mode: 0644
   notify:
-    - Reload systemd
     - Restart samba service
+
+- include: create-samba-users.yml
+
+- name: Start systemd-managed docker containers
+  meta: flush_handlers
 
 - name: Enable service
   service:
     name: "{{ service_name }}"
     enabled: true
-  register: service_state
-  changed_when: service_state.status.SubState != 'running'
-  notify: Start samba service
+    state: started
   when: not (
     molecule_docker_environment is defined
     and molecule_docker_environment | bool
     )
-
-- include: create-samba-users.yml
 
 - include: update-password.yml
   with_items: "{{
@@ -35,6 +35,3 @@
    | selectattr('update_password', 'true')
    | list
    }}"
-
-- name: Start systemd-managed docker containers
-  meta: flush_handlers

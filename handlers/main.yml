@@ -1,18 +1,4 @@
 ---
-- name: Reload systemd
-  systemd:
-    daemon_reload: true
-  when: not (
-    molecule_docker_environment is defined
-    and molecule_docker_environment | bool
-    )
-
-- name: Start samba service
-  service:
-    name: "{{ service_name }}"
-    state: started
-  register: samba_service_start
-
 - name: Restart samba service
   service:
     name: "{{ service_name }}"
