@@ -1,30 +1,30 @@
 ---
-alpine_version: latest
+samba_alpine_version: latest
 samba_version: latest
 
-image_name: local/samba
+samba_image_name: local/samba
 
-service_name: samba
-container_name: "{{service_name}}.service"
+samba_service_name: samba
+samba_container_name: "{{samba_service_name}}.service"
 
-volumes_path: ''
-config_volume: "{{volumes_path}}/config"
-data_volume: "{{volumes_path}}/data"
-storages_volume: "{{volumes_path}}/storages"
-homes_volume: "{{volumes_path}}/homes"
+samba_volumes_path: ''
+samba_config_volume: "{{samba_volumes_path}}/config"
+samba_data_volume: "{{samba_volumes_path}}/data"
+samba_storages_volume: "{{samba_volumes_path}}/storages"
+samba_homes_volume: "{{samba_volumes_path}}/homes"
 
-interface: 0.0.0.0
+samba_interface: 0.0.0.0
 samba_port: ''
-enable_netbios: false
-netbios_name: ''
+samba_enable_netbios: false
+samba_netbios_name: ''
 
-workgroup: WORKGROUP
-server_string: "%h server (Samba, Alpine)"
-storages: []
-users: []
-enable_homes: false
-log_level: ''
+samba_workgroup: WORKGROUP
+samba_server_string: "%h server (Samba, Alpine)"
+samba_storages: []
+samba_users: []
+samba_enable_homes: false
+samba_log_level: ''
 
-working_directory: /opt/samba
-dockerfile_path: "{{working_directory}}/docker"
-force_build: false
+samba_working_directory: /opt/samba
+samba_dockerfile_path: "{{samba_working_directory}}/docker"
+samba_force_build: false

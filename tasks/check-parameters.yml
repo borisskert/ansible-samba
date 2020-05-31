@@ -1,35 +1,35 @@
 ---
-- name: Check 'volumes_path' parameter
+- name: Check 'samba_volumes_path' parameter
   assert:
     that:
-      - "volumes_path is defined"
-      - "volumes_path | length > 0"
-    fail_msg: "parameter 'volumes_path' is missing"
+      - "samba_volumes_path is defined"
+      - "samba_volumes_path | length > 0"
+    fail_msg: "parameter 'samba_volumes_path' is missing"
 
-- name: Check 'config_volume' parameter
+- name: Check 'samba_config_volume' parameter
   assert:
     that:
-      - "config_volume is defined"
-      - "config_volume | length > 0"
-    fail_msg: "parameter 'config_volume' is missing"
+      - "samba_config_volume is defined"
+      - "samba_config_volume | length > 0"
+    fail_msg: "parameter 'samba_config_volume' is missing"
 
-- name: Check 'data_volume' parameter
+- name: Check 'samba_data_volume' parameter
   assert:
     that:
-      - "data_volume is defined"
-      - "data_volume | length > 0"
-    fail_msg: "parameter 'data_volume' is missing"
+      - "samba_data_volume is defined"
+      - "samba_data_volume | length > 0"
+    fail_msg: "parameter 'samba_data_volume' is missing"
 
-- name: Check 'storages_volume' parameter
+- name: Check 'samba_storages_volume' parameter
   assert:
     that:
-      - "storages_volume is defined"
-      - "storages_volume | length > 0"
-    fail_msg: "parameter 'storages_volume' is missing"
+      - "samba_storages_volume is defined"
+      - "samba_storages_volume | length > 0"
+    fail_msg: "parameter 'samba_storages_volume' is missing"
 
-- name: Check 'homes_volume' parameter
+- name: Check 'samba_homes_volume' parameter
   assert:
     that:
-      - "homes_volume is defined"
-      - "homes_volume | length > 0"
-    fail_msg: "parameter 'homes_volume' is missing"
+      - "samba_homes_volume is defined"
+      - "samba_homes_volume | length > 0"
+    fail_msg: "parameter 'samba_homes_volume' is missing"

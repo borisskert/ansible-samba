@@ -1,28 +1,28 @@
 [global]
-  workgroup = {{workgroup}}
-  server string = {{server_string}}
+  workgroup = {{samba_workgroup}}
+  server string = {{samba_server_string}}
   security = user
   map to guest = Bad User
   load printers = no
-{% if enable_netbios is defined and enable_netbios | bool %}
+{% if samba_enable_netbios is defined and samba_enable_netbios | bool %}
   disable netbios = no
-{% if netbios_name is defined and netbios_name | length > 0 %}
-  netbios name = {{netbios_name}}
+{% if samba_netbios_name is defined and samba_netbios_name | length > 0 %}
+  netbios name = {{samba_netbios_name}}
 {% endif %}
 {% else %}
   disable netbios = yes
 {% endif %}
   server role = standalone
   smb ports = 445
-{% if log_level is defined %}
-  log level = {{log_level}}
+{% if samba_log_level is defined %}
+  log level = {{samba_log_level}}
 {% endif %}
-{% if unix_extensions is defined and unix_extensions | bool %}
+{% if samba_unix_extensions is defined and samba_unix_extensions | bool %}
   unix extensions = yes
-{% elif unix_extensions is defined and not (unix_extensions | bool) %}
+{% elif samba_unix_extensions is defined and not (samba_unix_extensions | bool) %}
   unix extensions = no
 {% endif %}
-{% for storage in storages %}
+{% for storage in samba_storages %}
 
 [{{storage.name}}]
 {% if storage.host_path is defined and storage.host_path | length > 0 %}
@@ -85,7 +85,7 @@
   delete veto files = yes
 {% endfor %}
 
-{% if enable_homes is defined and enable_homes | bool %}
+{% if samba_enable_homes is defined and samba_enable_homes | bool %}
 
 [homes]
   comment = Home Directories

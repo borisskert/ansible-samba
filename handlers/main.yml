@@ -1,7 +1,7 @@
 ---
 - name: Restart samba service
   service:
-    name: "{{ service_name }}"
+    name: "{{ samba_service_name }}"
     state: restarted
   register: samba_service_restart
   when: not (
@@ -16,7 +16,7 @@
 # We can create samba users only if the container is already running
 - name: Create samba user
   shell: |
-    /usr/bin/docker exec {{ container_name }} \
+    /usr/bin/docker exec {{ samba_container_name }} \
     /add-samba-user.sh "{{ item.username }}" \
                        '{{ item.password }}' \
                        "{{ item.uid }}"

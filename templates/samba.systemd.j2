@@ -7,35 +7,35 @@ After=docker.service
 Requires=docker.service
 
 [Service]
-ExecStartPre=-/usr/bin/docker rm -f {{container_name}}
-ExecStartPre=/usr/bin/docker build --cache-from {{image_name}}:{{samba_version}} --tag {{image_name}}:{{samba_version}} {{dockerfile_path}}
+ExecStartPre=-/usr/bin/docker rm -f {{samba_container_name}}
+ExecStartPre=/usr/bin/docker build --cache-from {{samba_image_name}}:{{samba_version}} --tag {{samba_image_name}}:{{samba_version}} {{samba_dockerfile_path}}
 
-ExecStart=/usr/bin/docker run --name {{container_name}} \
-            --volume {{config_volume}}/etc:/etc \
-            --volume {{data_volume}}:/var/lib/samba \
-            --volume {{storages_volume}}:/storages \
-            --volume {{homes_volume}}:/home \
-{% for storage in storages %}
+ExecStart=/usr/bin/docker run --name {{samba_container_name}} \
+            --volume {{samba_config_volume}}/etc:/etc \
+            --volume {{samba_data_volume}}:/var/lib/samba \
+            --volume {{samba_storages_volume}}:/storages \
+            --volume {{samba_homes_volume}}:/home \
+{% for storage in samba_storages %}
 {% if storage.host_path is defined and storage.host_path | length > 0 %}
             --volume {{storage.host_path}}:{{storage.path}} \
 {% endif %}
 {% endfor %}
 {% if samba_port != "" %}
-            --publish {{interface}}:{{samba_port}}:445/tcp \
+            --publish {{samba_interface}}:{{samba_port}}:445/tcp \
 {% endif %}
-{% if enable_netbios | bool %}
-            --publish {{interface}}:137:137/udp \
-            --publish {{interface}}:138:138/udp \
-            --publish {{interface}}:139:139/tcp \
+{% if samba_enable_netbios | bool %}
+            --publish {{samba_interface}}:137:137/udp \
+            --publish {{samba_interface}}:138:138/udp \
+            --publish {{samba_interface}}:139:139/tcp \
 {% endif %}
             --tmpfs /tmp \
             --tmpfs /var/cache/samba \
             --tmpfs /run/samba \
             --tmpfs /var/log/samba \
-            {{image_name}}:{{samba_version}}
+            {{samba_image_name}}:{{samba_version}}
 
-ExecStop=-/usr/bin/docker stop {{container_name}}
-ExecStopPost=-/usr/bin/docker rm -f {{container_name}}
+ExecStop=-/usr/bin/docker stop {{samba_container_name}}
+ExecStopPost=-/usr/bin/docker rm -f {{samba_container_name}}
 
 Restart=always
 RestartSec=60s

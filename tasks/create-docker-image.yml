@@ -1,7 +1,7 @@
 ---
 - name: Create dockerimage directory
   file:
-    path: "{{ dockerfile_path }}"
+    path: "{{ samba_dockerfile_path }}"
     state: directory
     owner: root
     group: root
@@ -10,7 +10,7 @@
 - name: Copy add-user script
   copy:
     src: files/add-samba-user.sh
-    dest: "{{ dockerfile_path }}/add-samba-user.sh"
+    dest: "{{ samba_dockerfile_path }}/add-samba-user.sh"
     owner: root
     group: root
     mode: 0755
@@ -19,7 +19,7 @@
 - name: Copy update-password script
   copy:
     src: files/update-samba-user-password.sh
-    dest: "{{ dockerfile_path }}/update-samba-user-password.sh"
+    dest: "{{ samba_dockerfile_path }}/update-samba-user-password.sh"
     owner: root
     group: root
     mode: 0755
@@ -28,7 +28,7 @@
 - name: Create supervisor config
   template:
     src: supervisord.conf.j2
-    dest: "{{ dockerfile_path }}/supervisord.conf"
+    dest: "{{ samba_dockerfile_path }}/supervisord.conf"
     owner: root
     group: root
     mode: 0644
@@ -37,7 +37,7 @@
 - name: Template dockerfile
   template:
     src: Dockerfile.j2
-    dest: "{{ dockerfile_path }}/Dockerfile"
+    dest: "{{ samba_dockerfile_path }}/Dockerfile"
     owner: root
     group: root
     mode: 0644
@@ -46,9 +46,9 @@
 - name: Build dockerimage
   docker_image:
     build:
-      path: "{{ dockerfile_path }}"
+      path: "{{ samba_dockerfile_path }}"
       pull: false
-    name: "{{ image_name }}"
+    name: "{{ samba_image_name }}"
     tag: "{{ samba_version }}"
     source: build
     state: present
@@ -57,6 +57,6 @@
       or docker_add_user_script.changed
       or docker_update_password_script.changed
       or docker_supervisor_config.changed
-      or force_build
+      or samba_force_build
       }}"
   notify: Restart samba service

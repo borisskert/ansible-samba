@@ -1,7 +1,7 @@
 ---
 - name: Create config directory
   file:
-    path: "{{ config_volume }}"
+    path: "{{ samba_config_volume }}"
     state: directory
     owner: root
     group: root
@@ -9,7 +9,7 @@
 
 - name: Create config directory structure
   file:
-    path: "{{ config_volume }}/etc"
+    path: "{{ samba_config_volume }}/etc"
     state: directory
     owner: root
     group: root
@@ -17,7 +17,7 @@
 
 - name: Create etc/samba directory
   file:
-    path: "{{ config_volume }}/etc/samba"
+    path: "{{ samba_config_volume }}/etc/samba"
     state: directory
     owner: root
     group: root
@@ -25,7 +25,7 @@
 
 - name: Create data directory
   file:
-    path: "{{ data_volume }}"
+    path: "{{ samba_data_volume }}"
     state: directory
     owner: root
     group: root
@@ -34,7 +34,7 @@
 # otherwise, samba will not start and crash with an error
 - name: Create data/private directory
   file:
-    path: "{{ data_volume }}/private"
+    path: "{{ samba_data_volume }}/private"
     state: directory
     owner: root
     group: root
@@ -44,7 +44,7 @@
 
 - name: Create homes volume
   file:
-    path: "{{ homes_volume }}"
+    path: "{{ samba_homes_volume }}"
     state: directory
     owner: root
     group: root

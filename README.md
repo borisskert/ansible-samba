@@ -26,25 +26,25 @@ Installs samba-server as docker container.
 
 | Variable      | Type | Mandatory? | Default | Description           |
 |---------------|------|------------|---------|-----------------------|
-| alpine_version        | text | no | latest | Your selected alpine version |
+| samba_alpine_version        | text | no | latest | Your selected alpine version |
 | samba_version         | text | no | latest | Your selected samba version  |
-| image_name            | text | no | local/samba-server | Docker image name                                 |
-| container_name        | text | no | samba.service                 | The name of the docker container       |
-| interface             | ip address | no | 0.0.0.0                 | Mapped network for web-interface ports |
+| samba_image_name            | text | no | local/samba-server | Docker image name                                 |
+| samba_container_name        | text | no | samba.service                 | The name of the docker container       |
+| samba_interface             | ip address | no | 0.0.0.0                 | Mapped network for web-interface ports |
 | samba_port            | port       | no | <empty>                 | Default port (TCP): 445                |
-| enable_netbios        | boolean    | no | no                      | Enables NetBios option and publish ports 137, 138 and 138 |
-| netbios_name          | text       | no | <empty>                 | Configures the NetBios name                               |
-| volumes_path          | path       | yes | <empty>                 | Directory where the persistent data will be stored       |
-| config_volume         | path       | no  | <volumes_path>/config   | Directory where the config data will be stored           |
-| data_volume           | path       | no  | <volumes_path>/data     | Directory where the server data will be stored           |
-| storages_volume       | path       | no  | <volumes_path>/storages | Directory where the storages are located                 |
-| homes_volume          | path       | no  | <volumes_path>/homes    | Directory where the homes are located                    |
-| workgroup             | text       | no  | WORKGROUP               | The default Samba workgroup            |
-| server_string         | text       | no  | "%h server (Samba, Alpine)" | The default Samba server string    |
-| enable_homes          | boolean    | no  | no                          | Enables home directories for users |
-| unix_extensions       | boolean    | no  | <empty>                     | Enable or disable UNIX extensions  |
-| storages              | array of storage | no | <empty array>          | The samba storage configuration    |
-| users                 | array of user    | no | <empty array>          | The samba user configuration       |
+| samba_enable_netbios        | boolean    | no | no                      | Enables NetBios option and publish ports 137, 138 and 138 |
+| samba_netbios_name          | text       | no | <empty>                 | Configures the NetBios name                               |
+| samba_volumes_path          | path       | yes | <empty>                 | Directory where the persistent data will be stored       |
+| samba_config_volume         | path       | no  | <samba_volumes_path>/config   | Directory where the config data will be stored           |
+| samba_data_volume           | path       | no  | <samba_volumes_path>/data     | Directory where the server data will be stored           |
+| samba_storages_volume       | path       | no  | <samba_volumes_path>/storages | Directory where the storages are located                 |
+| samba_homes_volume          | path       | no  | <samba_volumes_path>/homes    | Directory where the homes are located                    |
+| samba_workgroup             | text       | no  | WORKGROUP               | The default Samba workgroup            |
+| samba_server_string         | text       | no  | "%h server (Samba, Alpine)" | The default Samba server string    |
+| samba_enable_homes          | boolean    | no  | no                          | Enables home directories for users |
+| samba_unix_extensions             | boolean    | no  | <empty>                     | Enable or disable UNIX extensions  |
+| samba_storages              | array of storage | no | <empty array>          | The samba storage configuration    |
+| samba_users                 | array of user    | no | <empty array>          | The samba user configuration       |
 
 ### Definition storage
 
@@ -86,18 +86,18 @@ Installs samba-server as docker container.
 
   roles:
     - role: ansible-samba
-      alpine_version: 3.11.5
+      samba_alpine_version: 3.11.5
       samba_version: 4.11
       samba_port: 445
-      interface: 0.0.0.0
-      volumes_path: /srv/samba
-      storages_volume: /srv/samba/storages
-      log_level: 2
-      enable_homes: no
-      enable_netbios: yes
-      netbios_name: mysamba
-      unix_extensions: no
-      users:
+      samba_interface: 0.0.0.0
+      samba_volumes_path: /srv/samba
+      samba_storages_volume: /srv/samba/storages
+      samba_log_level: 2
+      samba_enable_homes: no
+      samba_enable_netbios: yes
+      samba_netbios_name: mysamba
+      samba_unix_extensions: no
+      samba_users:
         - username: user1
           password: user1pwd
           uid: 2001
@@ -105,7 +105,7 @@ Installs samba-server as docker container.
         - username: user2
           password: user2pwd
           uid: 2002
-      storages:
+      samba_storages:
 
         # this share has its own location
         - name: Share

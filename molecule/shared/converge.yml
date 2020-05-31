@@ -5,17 +5,17 @@
 
   roles:
     - role: ansible-samba
-      alpine_version: '3.11'
+      samba_alpine_version: '3.11'
       samba_version: '4.11'
       samba_port: 445
-      interface: 0.0.0.0
-      volumes_path: /srv/samba
-      log_level: 2
-      enable_homes: true
-      enable_netbios: true
-      netbios_name: mysamba
-      unix_extensions: false
-      users:
+      samba_interface: 0.0.0.0
+      samba_volumes_path: /srv/samba
+      samba_log_level: 2
+      samba_enable_homes: true
+      samba_enable_netbios: true
+      samba_netbios_name: mysamba
+      samba_unix_extensions: false
+      samba_users:
         - username: user1
           password: user$pwd
           uid: 2001
@@ -24,7 +24,7 @@
           password: user$pwd
           uid: 2002
           update_password: false
-      storages:
+      samba_storages:
         - name: Share
           path: /share
           host_path: /srv/samba/storage_share

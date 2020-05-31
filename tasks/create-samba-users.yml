@@ -4,4 +4,4 @@
     users_for_creation: []
 
 - include: create-samba-user.yml
-  with_items: "{{ users }}"
+  with_items: "{{ samba_users }}"

@@ -7,7 +7,7 @@
 - name: Create systemd unit file
   template:
     src: samba.systemd.j2
-    dest: "/etc/systemd/system/{{ service_name }}.service"
+    dest: "/etc/systemd/system/{{ samba_service_name }}.service"
     owner: root
     group: root
     mode: 0644
@@ -21,7 +21,7 @@
 
 - name: Enable service
   service:
-    name: "{{ service_name }}"
+    name: "{{ samba_service_name }}"
     enabled: true
     state: started
   when: not (
@@ -31,7 +31,7 @@
 
 - include: update-password.yml
   with_items: "{{
-   users
+   samba_users
    | selectattr('update_password', 'true')
    | list
    }}"

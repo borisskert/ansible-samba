@@ -2,7 +2,7 @@
 
 - name: Create storage directory
   file:
-    path: "{{ storages_volume }}"
+    path: "{{ samba_storages_volume }}"
     state: directory
     owner: root
     group: root
@@ -11,7 +11,7 @@
 - name: Select storages with host path
   set_fact:
     storages_with_host_path: "{{
-      storages
+      samba_storages
       | selectattr('host_path', 'defined')
       | list
       }}"
@@ -28,14 +28,14 @@
 - name: Select storages without host path
   set_fact:
     storages_without_host_path: "{{
-      storages
+      samba_storages
       | selectattr('host_path', 'undefined')
       | list
       }}"
 
 - name: Create storage directories
   file:
-    path: "{{ storages_volume }}{{ item.path }}"
+    path: "{{ samba_storages_volume }}{{ item.path }}"
     state: directory
     owner: root
     group: root

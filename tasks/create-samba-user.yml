@@ -2,7 +2,7 @@
 - name: Determine if samba user exist
   shell: |
     set -o pipefail
-    cat {{ config_volume }}/etc/passwd \
+    cat {{ samba_config_volume }}/etc/passwd \
     | grep {{ item.username }}:x:{{ item.uid }}
   args:
     executable: /bin/bash
