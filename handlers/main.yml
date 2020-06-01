@@ -1,8 +1,9 @@
 ---
 - name: Restart samba service
-  service:
+  systemd:
     name: "{{ samba_service_name }}"
     state: restarted
+    daemon_reload: true
   register: samba_service_restart
   when: not (
     samba_service_start is defined

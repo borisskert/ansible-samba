@@ -13,7 +13,7 @@ driver:
   name: docker
 
 platforms:
-  - name: ansible-teamspeak-focal
+  - name: ansible-samba-focal
     image: docker.io/borisskert/python3:focal
     pull: true
     pre_build_image: true
@@ -21,7 +21,7 @@ platforms:
       - '/var/run/docker.sock:/var/run/docker.sock'
     groups:
       - docker
-  - name: ansible-teamspeak-bionic
+  - name: ansible-samba-bionic
     image: docker.io/borisskert/python3:bionic
     pull: true
     pre_build_image: true
@@ -29,7 +29,7 @@ platforms:
       - '/var/run/docker.sock:/var/run/docker.sock'
     groups:
       - docker
-  - name: ansible-teamspeak-xenial
+  - name: ansible-samba-xenial
     image: docker.io/borisskert/python3:xenial
     pull: true
     pre_build_image: true
@@ -37,7 +37,7 @@ platforms:
       - '/var/run/docker.sock:/var/run/docker.sock'
     groups:
       - docker
-  - name: ansible-teamspeak-buster
+  - name: ansible-samba-buster
     image: docker.io/borisskert/python3:buster
     pull: true
     pre_build_image: true
@@ -46,7 +46,7 @@ platforms:
     groups:
       - docker
       - debian
-  - name: ansible-teamspeak-stretch
+  - name: ansible-samba-stretch
     image: docker.io/borisskert/python3:stretch
     pull: true
     pre_build_image: true
