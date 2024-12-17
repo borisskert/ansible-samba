@@ -3,6 +3,7 @@ dependency:
   name: galaxy
   options:
     role-file: ./molecule/shared/requirements.yml
+    force: true
 
 lint: |
   set -e
@@ -13,6 +14,22 @@ driver:
   name: docker
 
 platforms:
+  - name: ansible-samba-noble
+    image: docker.io/borisskert/python3:noble
+    pull: true
+    pre_build_image: true
+    volumes:
+      - '/var/run/docker.sock:/var/run/docker.sock'
+    groups:
+      - docker
+  - name: ansible-samba-jammy
+    image: docker.io/borisskert/python3:jammy
+    pull: true
+    pre_build_image: true
+    volumes:
+      - '/var/run/docker.sock:/var/run/docker.sock'
+    groups:
+      - docker
   - name: ansible-samba-focal
     image: docker.io/borisskert/python3:focal
     pull: true
@@ -21,24 +38,9 @@ platforms:
       - '/var/run/docker.sock:/var/run/docker.sock'
     groups:
       - docker
-  - name: ansible-samba-bionic
-    image: docker.io/borisskert/python3:bionic
-    pull: true
-    pre_build_image: true
-    volumes:
-      - '/var/run/docker.sock:/var/run/docker.sock'
-    groups:
-      - docker
-  - name: ansible-samba-xenial
-    image: docker.io/borisskert/python3:xenial
-    pull: true
-    pre_build_image: true
-    volumes:
-      - '/var/run/docker.sock:/var/run/docker.sock'
-    groups:
-      - docker
-  - name: ansible-samba-buster
-    image: docker.io/borisskert/python3:buster
+
+  - name: ansible-samba-bookworm
+    image: docker.io/borisskert/python3:bookworm
     pull: true
     pre_build_image: true
     volumes:
@@ -46,8 +48,8 @@ platforms:
     groups:
       - docker
       - debian
-  - name: ansible-samba-stretch
-    image: docker.io/borisskert/python3:stretch
+  - name: ansible-samba-bullseye
+    image: docker.io/borisskert/python3:bullseye
     pull: true
     pre_build_image: true
     volumes:
