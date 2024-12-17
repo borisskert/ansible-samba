@@ -41,12 +41,6 @@
       register: out_share_directory
       failed_when: not out_share_directory.stat.exists
 
-    - name: Should know docker image
-      docker_image:
-        name: local/samba:4.11
-        source: local
-        state: present
-
   post_tasks:
     - name: Delete docker image
       docker_image:

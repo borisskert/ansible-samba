@@ -1,8 +1,8 @@
 ---
-- include: check-parameters.yml
-- include: create-docker-image.yml
-- include: create-volumes.yml
-- include: initialize-config.yml
+- include_tasks: check-parameters.yml
+- include_tasks: create-docker-image.yml
+- include_tasks: create-volumes.yml
+- include_tasks: initialize-config.yml
 
 - name: Create systemd unit file
   template:
@@ -14,7 +14,7 @@
   notify:
     - Restart samba service
 
-- include: create-samba-users.yml
+- include_tasks: create-samba-users.yml
 
 - name: Start systemd-managed docker containers
   meta: flush_handlers
@@ -29,7 +29,7 @@
     and molecule_docker_environment | bool
     )
 
-- include: update-password.yml
+- include_tasks: update-password.yml
   with_items: "{{
    samba_users
    | selectattr('update_password', 'true')

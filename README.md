@@ -13,7 +13,6 @@ Installs samba-server as docker container.
 
 ## What does this role
 
-* Build docker image
 * Create volume paths for docker container
 * Template the samba config
 * Setup systemd unit file
@@ -24,49 +23,49 @@ Installs samba-server as docker container.
 
 ### Main config
 
-| Variable      | Type | Mandatory? | Default | Description           |
-|---------------|------|------------|---------|-----------------------|
-| samba_alpine_version        | text | no | latest | Your selected alpine version |
-| samba_version         | text | no | latest | Your selected samba version  |
-| samba_image_name            | text | no | local/samba-server | Docker image name                                 |
-| samba_container_name        | text | no | samba.service                 | The name of the docker container       |
-| samba_interface             | ip address | no | 0.0.0.0                 | Mapped network for web-interface ports |
-| samba_port            | port       | no | <empty>                 | Default port (TCP): 445                |
-| samba_enable_netbios        | boolean    | no | no                      | Enables NetBios option and publish ports 137, 138 and 138 |
-| samba_netbios_name          | text       | no | <empty>                 | Configures the NetBios name                               |
-| samba_volumes_path          | path       | yes | <empty>                 | Directory where the persistent data will be stored       |
-| samba_config_volume         | path       | no  | <samba_volumes_path>/config   | Directory where the config data will be stored           |
-| samba_data_volume           | path       | no  | <samba_volumes_path>/data     | Directory where the server data will be stored           |
-| samba_storages_volume       | path       | no  | <samba_volumes_path>/storages | Directory where the storages are located                 |
-| samba_homes_volume          | path       | no  | <samba_volumes_path>/homes    | Directory where the homes are located                    |
-| samba_workgroup             | text       | no  | WORKGROUP               | The default Samba workgroup            |
-| samba_server_string         | text       | no  | "%h server (Samba, Alpine)" | The default Samba server string    |
-| samba_enable_homes          | boolean    | no  | no                          | Enables home directories for users |
-| samba_unix_extensions             | boolean    | no  | <empty>                     | Enable or disable UNIX extensions  |
-| samba_storages              | array of storage | no | <empty array>          | The samba storage configuration    |
-| samba_users                 | array of user    | no | <empty array>          | The samba user configuration       |
+| Variable              | Type             | Mandatory? | Default                       | Description                                               |
+|-----------------------|------------------|------------|-------------------------------|-----------------------------------------------------------|
+| samba_alpine_version  | text             | no         | latest                        | Your selected alpine version                              |
+| samba_version         | text             | no         | latest                        | Your selected samba version                               |
+| samba_image_name      | text             | no         | local/samba-server            | Docker image name                                         |
+| samba_container_name  | text             | no         | samba.service                 | The name of the docker container                          |
+| samba_interface       | ip address       | no         | 0.0.0.0                       | Mapped network for web-interface ports                    |
+| samba_port            | port             | no         | <empty>                       | Default port (TCP): 445                                   |
+| samba_enable_netbios  | boolean          | no         | no                            | Enables NetBios option and publish ports 137, 138 and 138 |
+| samba_netbios_name    | text             | no         | <empty>                       | Configures the NetBios name                               |
+| samba_volumes_path    | path             | yes        | <empty>                       | Directory where the persistent data will be stored        |
+| samba_config_volume   | path             | no         | <samba_volumes_path>/config   | Directory where the config data will be stored            |
+| samba_data_volume     | path             | no         | <samba_volumes_path>/data     | Directory where the server data will be stored            |
+| samba_storages_volume | path             | no         | <samba_volumes_path>/storages | Directory where the storages are located                  |
+| samba_homes_volume    | path             | no         | <samba_volumes_path>/homes    | Directory where the homes are located                     |
+| samba_workgroup       | text             | no         | WORKGROUP                     | The default Samba workgroup                               |
+| samba_server_string   | text             | no         | "%h server (Samba, Alpine)"   | The default Samba server string                           |
+| samba_enable_homes    | boolean          | no         | no                            | Enables home directories for users                        |
+| samba_unix_extensions | boolean          | no         | <empty>                       | Enable or disable UNIX extensions                         |
+| samba_storages        | array of storage | no         | <empty array>                 | The samba storage configuration                           |
+| samba_users           | array of user    | no         | <empty array>                 | The samba user configuration                              |
 
 ### Definition storage
 
-| Property      | Type | Mandatory? | Description           |
-|---------------|------|------------|-----------------------|
-| name          | text | no         | The name of the storage |
-| path          | path | yes        | The internal path of the storage (within docker-container) |
-| host_path     | path | no         | The external path of the storage (on the host system)      |
-| comment       | text | no         | The comment of the storage                                 |
-| browseable    | boolean | no      | Is the storage browseable?                                 |
-| writable      | boolean | no      | Is the storage writable?                                   |
-| guest_access  | boolean | no      | Do guests have access?                                     |
-| write_list    | list of text | no | Names of accounts with write permission                    |
+| Property     | Type         | Mandatory? | Description                                                |
+|--------------|--------------|------------|------------------------------------------------------------|
+| name         | text         | no         | The name of the storage                                    |
+| path         | path         | yes        | The internal path of the storage (within docker-container) |
+| host_path    | path         | no         | The external path of the storage (on the host system)      |
+| comment      | text         | no         | The comment of the storage                                 |
+| browseable   | boolean      | no         | Is the storage browseable?                                 |
+| writable     | boolean      | no         | Is the storage writable?                                   |
+| guest_access | boolean      | no         | Do guests have access?                                     |
+| write_list   | list of text | no         | Names of accounts with write permission                    |
 
 ### Definition user
 
-| Property      | Type | Mandatory? | Description           |
-|---------------|------|------------|-----------------------|
-| username      | text | yes        | Username of the specified user |
-| password      | text | yes        | (Clear text) password of the specified user |
-| uid           | number | yes      | Unix user id                                |
-| update_password | boolean | yes   | Defines if the user password will be updated |
+| Property        | Type    | Mandatory? | Description                                  |
+|-----------------|---------|------------|----------------------------------------------|
+| username        | text    | yes        | Username of the specified user               |
+| password        | text    | yes        | (Clear text) password of the specified user  |
+| uid             | number  | yes        | Unix user id                                 |
+| update_password | boolean | yes        | Defines if the user password will be updated |
 
 ## Usage
 
@@ -152,4 +151,4 @@ molecule test
 ```
 
 I recommend to use [pyenv](https://github.com/pyenv/pyenv) for local testing.
-Within the Github Actions pipeline I use [my own molecule Docker image](https://github.com/borisskert/docker-molecule).
+Within the GitHub Actions pipeline I use [my own molecule action](https://github.com/borisskert/molecule-action).

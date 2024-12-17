@@ -40,7 +40,7 @@
     group: root
     mode: 0750
 
-- include: create-storage-volumes.yml
+- include_tasks: create-storage-volumes.yml
 
 - name: Create homes volume
   file:

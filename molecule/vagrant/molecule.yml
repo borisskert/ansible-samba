@@ -3,6 +3,7 @@ dependency:
   name: galaxy
   options:
     role-file: ./molecule/shared/requirements.yml
+    force: true
 
 driver:
   name: vagrant
@@ -10,18 +11,18 @@ driver:
     name: virtualbox
 
 platforms:
-  - name: ansible-timemachine-xenial
-    box: ubuntu/xenial64
-  - name: ansible-timemachine-bionic
-    box: ubuntu/bionic64
-  - name: ansible-timemachine-focal
-    box: ubuntu/focal64
-  - name: ansible-timemachine-stretch
-    box: debian/stretch64
+  - name: ansible-samba-noble
+    box: cloud-image/ubuntu-24.04
+  - name: ansible-samba-jammy
+    box: cloud-image/ubuntu-22.04
+  - name: ansible-samba-focal
+    box: cloud-image/ubuntu-20.04
+  - name: ansible-samba-bookworm
+    box: cloud-image/debian-12
     groups:
       - debian
-  - name: ansible-timemachine-buster
-    box: debian/buster64
+  - name: ansible-samba-bullseye
+    box: cloud-image/debian-11
     groups:
       - debian
 

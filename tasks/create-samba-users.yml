@@ -3,5 +3,5 @@
   set_fact:
     users_for_creation: []
 
-- include: create-samba-user.yml
+- include_tasks: create-samba-user.yml
   with_items: "{{ samba_users }}"
