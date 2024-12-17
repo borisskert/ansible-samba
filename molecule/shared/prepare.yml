@@ -7,3 +7,10 @@
     - role: install-docker
       docker_storage_driver: overlay2
       docker_cleanup_enabled: false
+
+  post_tasks:
+    - name: Install netcat on Debian-based systems (to test open ports)
+      package:
+        name: netcat-traditional
+        state: present
+      when: ansible_os_family == 'Debian'

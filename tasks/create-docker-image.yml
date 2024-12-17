@@ -42,21 +42,3 @@
     group: root
     mode: 0644
   register: dockerfile
-
-- name: Build dockerimage
-  docker_image:
-    build:
-      path: "{{ samba_dockerfile_path }}"
-      pull: false
-    name: "{{ samba_image_name }}"
-    tag: "{{ samba_version }}"
-    source: build
-    state: present
-    force_source: "{{
-      dockerfile.changed
-      or docker_add_user_script.changed
-      or docker_update_password_script.changed
-      or docker_supervisor_config.changed
-      or samba_force_build
-      }}"
-  notify: Restart samba service
